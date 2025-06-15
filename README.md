@@ -11,7 +11,7 @@
     @Vishal Budamala (on Slack)
 
     ## Team "AISummerHACK"
-    - [Team Member 1](GitHub profile link)
+    -  Sangeetha Sasikumar (Github: Sangeetha-007)
     - [Team Member 2](GitHub profile link)
     - [Team Member 3](GitHub profile link)
     <!-- Add all team members -->
