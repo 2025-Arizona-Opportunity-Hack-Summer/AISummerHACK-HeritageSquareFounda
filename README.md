@@ -13,7 +13,7 @@
     ## Team "AISummerHACK"
     -  Sangeetha Sasikumar (Github: Sangeetha-007)
     - [Isaac Phiri](https://github.com/IsaacPhiri)
-    - [Team Member 3](GitHub profile link)
+    -  Amit Raj Reddy Dharam (https://github.com/Ames-Zero)
     <!-- Add all team members -->
 
     ## Project Overview
