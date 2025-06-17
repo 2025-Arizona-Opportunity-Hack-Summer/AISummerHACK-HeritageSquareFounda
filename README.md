@@ -12,7 +12,7 @@
 
     ## Team "AISummerHACK"
     -  Sangeetha Sasikumar (Github: Sangeetha-007)
-    - [Team Member 2](GitHub profile link)
+    - [Isaac Phiri](https://github.com/IsaacPhiri)
     - [Team Member 3](GitHub profile link)
     <!-- Add all team members -->
 
