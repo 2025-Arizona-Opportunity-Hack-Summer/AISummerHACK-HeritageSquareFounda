@@ -14,6 +14,7 @@
     -  Sangeetha Sasikumar (Github: Sangeetha-007)
     - [Isaac Phiri](https://github.com/IsaacPhiri)
     -  Amit Raj Reddy Dharam (https://github.com/Ames-Zero)
+    - Vishal Budamala (GitHub: vbudamal12)
     <!-- Add all team members -->
 
     ## Project Overview
