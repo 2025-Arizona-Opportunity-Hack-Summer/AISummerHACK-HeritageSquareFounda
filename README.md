@@ -33,6 +33,21 @@
     - APIs: 
     <!-- Add/modify as needed -->
 
+    ### ⚙️ High-Level Architecture
+    
+        ```bash
+        Google Drive API
+                ↓
+        Document Extractor (PDF, DOCX, etc.)
+                ↓
+        Text Chunker + Indexing (LangChain + FAISS)
+                ↓
+        AI Model (Gemini) → interprets queries
+                ↓
+        File Classifier / Search / Reorganizer
+                ↓
+        UI Chat Interface
+        ```
 
     ## Getting Started
     Instructions on how to set up and run your project locally.
