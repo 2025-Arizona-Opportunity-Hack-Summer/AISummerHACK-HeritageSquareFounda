@@ -37,6 +37,7 @@ function App() {
       });
     }
     catch {
+      setDiscussions([...ogDiscussion, {id: discussion.length, query: query, response: "An error has occurred"}]);
       console.log("server error");
     }
   }
