@@ -34,20 +34,43 @@
     <!-- Add/modify as needed -->
 
     ### ⚙️ High-Level Architecture
-    
-        ```bash
-        Google Drive API
-                ↓
-        Document Extractor (PDF, DOCX, etc.)
-                ↓
-        Text Chunker + Indexing (LangChain + FAISS)
-                ↓
-        AI Model (Gemini) → interprets queries
-                ↓
-        File Classifier / Search / Reorganizer
-                ↓
-        UI Chat Interface
-        ```
+
+```bash
+Google Drive API
+        ↓
+Document Extractor (PDF, DOCX, etc.)
+        ↓
+Text Chunker + Indexing (LangChain + FAISS)
+        ↓
+AI Model (Gemini) → interprets queries
+        ↓
+File Classifier / Search / Reorganizer
+        ↓
+UI Chat Interface
+```
+
+### File Structure
+
+```bash
+backend/
+├── main.py                # Entry point for backend server
+├── .env                  # Environment variables
+├── requirements.txt      # Python dependencies
+│
+├── config/               # Configuration files (settings, credentials)
+│
+├── api/                  # API route handlers for organizing and querying
+│
+├── modules/              # Core logic modules for organization and AI agent
+│   ├── organizer/        # Module 1: Google Drive organization + Knowledge Graph
+│   ├── ai_agent/         # Module 2: AI agent with RAG-based querying
+│   ├── vector_store/     # Embedding and semantic search components
+│   ├── knowledge_graph/  # Shared knowledge graph utilities and storage
+│
+├── shared/               # Common utilities, schemas, prompts
+│
+├── tests/                # Unit and integration tests
+```
 
     ## Getting Started
     Instructions on how to set up and run your project locally.
