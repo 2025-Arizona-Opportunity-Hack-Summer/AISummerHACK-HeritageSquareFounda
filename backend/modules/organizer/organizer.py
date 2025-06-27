@@ -7,6 +7,7 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+from tabulate import tabulate
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ["https://www.googleapis.com/auth/drive.metadata.readonly"]
@@ -41,7 +42,7 @@ def categorizer():
     # Call the Drive v3 API
     results = (
         service.files()
-        .list(pageSize=10, fields="nextPageToken, files(id, name)")
+        .list(pageSize=10, fields="nextPageToken, files(id, name, mimeType, size, parents, modifiedTime)")
         .execute()
     )
     items = results.get("files", [])
@@ -49,9 +50,40 @@ def categorizer():
     if not items:
       print("No files found.")
       return
-    print("Files:")
-    for item in items:
-      print(f"{item['name']} ({item['id']})")
+    else:
+        rows = []
+        for item in items:
+            # get the File ID
+            id = item["id"]
+            # get the name of file
+            name = item["name"]
+            try:
+                # parent directory ID
+                parents = item["parents"]
+            except:
+                # has no parrents
+                parents = "N/A"
+            try:
+                # get the size in nice bytes format (KB, MB, etc.)
+                size = item["size"]
+            except:
+                # not a file, may be a folder
+                size = "N/A"
+            # get the Google Drive type of file
+            mime_type = item["mimeType"]
+            # get last modified date time
+            modified_time = item["modifiedTime"]
+            # append everything to the list
+            rows.append((id, name, parents, size, mime_type, modified_time))
+        print("Files:")
+        # convert to a human readable table
+        table = tabulate(rows, headers=["ID", "Name", "Parents", "Size", "Type", "Modified Time"])
+        # print the table
+        print(table)
+      
+    # print("Files:")
+    # for item in items:
+    #   print(f"{item['name']} ({item['id']}) - {item['mimeType']} - {item.get('size', 'N/A')} bytes - Modified: {item['modifiedTime']}")
   except HttpError as error:
     # TODO(developer) - Handle errors from drive API.
     print(f"An error occurred: {error}")
