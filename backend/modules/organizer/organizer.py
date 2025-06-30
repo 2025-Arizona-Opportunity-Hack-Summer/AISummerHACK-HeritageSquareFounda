@@ -10,25 +10,27 @@ import os.path
 from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
+from openai import OpenAI
 
 # === CONFIGURATION ===
 SERVICE_ACCOUNT_FILE = "token.json"
 SCOPES = ["https://www.googleapis.com/auth/drive"]
 PROJECT_ID = "categorizer-464114"  # Only required for Vertex AI (not used here)
+client = OpenAI(api_key=("OPENAI_API_KEY"))
 
 # === MANUAL CATEGORIES ===
-CATEGORIES = {
-    "Development": ["donor", "fundraising", "grant", "event", "sponsorship"],
-    "Marketing": ["poster", "campaign", "ad", "social media", "brand", "pricing"],
-    "Operations": ["workflow", "logistics", "inventory"],
-    "Research": ["historic", "archive", "data", "source", "record"],
-    "Board of Directors": ["board", "meeting", "minutes", "trustees"],
-    "Programming": ["schedule", "activities", "calendar"],
-    "Employee Resources": ["contract", "policy", "leave", "benefits", "training"],
-    "Accounting": ["invoice", "budget", "expenses", "finance", "balance"],
-    "Curation": ["exhibit", "collection", "display", "artifacts"],
-    "Images": ["photo", "image", "jpg", "png", "jpeg"]
-}
+# CATEGORIES = {
+#     "Development": ["donor", "fundraising", "grant", "event", "sponsorship"],
+#     "Marketing": ["poster", "campaign", "ad", "social media", "brand", "pricing"],
+#     "Operations": ["workflow", "logistics", "inventory"],
+#     "Research": ["historic", "archive", "data", "source", "record"],
+#     "Board of Directors": ["board", "meeting", "minutes", "trustees"],
+#     "Programming": ["schedule", "activities", "calendar"],
+#     "Employee Resources": ["contract", "policy", "leave", "benefits", "training"],
+#     "Accounting": ["invoice", "budget", "expenses", "finance", "balance"],
+#     "Curation": ["exhibit", "collection", "display", "artifacts"],
+#     "Images": ["photo", "image", "jpg", "png", "jpeg"]
+# }
 
 
 # === INITIALIZE GOOGLE APIs ===
@@ -85,19 +87,32 @@ def download_file_content(file_id, mime_type):
 
 
 # === MANUAL KEYWORD CLASSIFICATION ===
-def classify_document_by_keywords(text):
-    text = text.lower()
-    category_scores = {}
+# # def classify_document_by_keywords(text):
+#     text = text.lower()
+#     category_scores = {}
 
-    for category, keywords in CATEGORIES.items():
-        score = sum(text.count(keyword) for keyword in keywords)
-        category_scores[category] = score
+#     for category, keywords in CATEGORIES.items():
+#         score = sum(text.count(keyword) for keyword in keywords)
+#         category_scores[category] = score
 
-    best_category = max(category_scores, key=category_scores.get)
-    if category_scores[best_category] > 0:
-        return best_category
-    return "Uncategorized"
+#     best_category = max(category_scores, key=category_scores.get)
+#     if category_scores[best_category] > 0:
+#         return best_category
+#     return "Uncategorized"
 
+# ===== CATEGORIZE USING AI ===
+def categorize_and_tag_openai(text):
+    prompt = (
+        "Categorize the following document and suggest 3-5 relevant tags."
+        "Text:\n" + text + "\n\n"
+        "Respond in this JSON format: {\"category\": \"<category>\", \"tags\": [\"tag1\", \"tag2\", ...]}"
+    )
+    response = client.chat.completions.create(
+        model = "gpt-4",
+        messages = [{"role":"user", "content": prompt}]
+    )
+    result = eval(response['choices'][0]['messages']['content'])
+    return result['category'], result['tags']
 
 # === MOVE FILE TO CATEGORY FOLDER ===
 def move_file_to_category(file_id, category):
@@ -136,11 +151,23 @@ def categorize_and_move_file(file_id, file_name, mime_type):
         print("No extractable content found.")
         category = "Uncategorized"
     else:
-        category = classify_document_by_keywords(content)
+        #category = classify_document_by_keywords(content)
+        category, tags = categorize_and_tag_openai(content)
 
-    print(f"Classified as: {category}")
+    print(f"Classified as: {category}, with tags: {tags}")
     move_file_to_category(file_id, category)
+    add_tags_to_file(drive_service, file_id, tags)
     print(f"Moved '{file_name}' to folder: {category}")
+
+# === ADD TAGS TO GOOGLE DRIVE FILES ===
+def add_tags_to_file(drive_service, file_id, tags):
+    custom_properties = {f"tag_{i}": tag for i, tag in enumerate(tags)}
+    file_metadata = {'properties': custom_properties}
+    drive_service.files().update(
+        fileId = file_id,
+        body = file_metadata,
+        fileIds = 'id, properties'
+    ).execute()
 
 
 # === BATCH PROCESS FILES ===
@@ -152,7 +179,6 @@ def process_all_drive_files():
 
     for file in results.get('files', []):
         categorize_and_move_file(file['id'], file['name'], file['mimeType'])
-
 
 # === MAIN ===
 if __name__ == "__main__":
