@@ -22,21 +22,6 @@ PROJECT_ID = "categorizer-464114"  # Only required for Vertex AI (not used here)
 
 client = genai.Client(api_key="AIzaSyA5dqjjQUhrLlNIqWVRHLXLTPfrmB3IT8U")
 
-# === MANUAL CATEGORIES ===
-# CATEGORIES = {
-#     "Development": ["donor", "fundraising", "grant", "event", "sponsorship"],
-#     "Marketing": ["poster", "campaign", "ad", "social media", "brand", "pricing"],
-#     "Operations": ["workflow", "logistics", "inventory"],
-#     "Research": ["historic", "archive", "data", "source", "record"],
-#     "Board of Directors": ["board", "meeting", "minutes", "trustees"],
-#     "Programming": ["schedule", "activities", "calendar"],
-#     "Employee Resources": ["contract", "policy", "leave", "benefits", "training"],
-#     "Accounting": ["invoice", "budget", "expenses", "finance", "balance"],
-#     "Curation": ["exhibit", "collection", "display", "artifacts"],
-#     "Images": ["photo", "image", "jpg", "png", "jpeg"]
-# }
-
-
 # === INITIALIZE GOOGLE APIs ===
 creds = None
 # The file token.json stores the user's access and refresh tokens, and is
@@ -63,11 +48,11 @@ if not creds or not creds.valid:
 # Google Drive
 drive_service = build('drive', 'v3', credentials=creds)
 
-
 # === TEXT EXTRACTION ===
 def download_file_content(file_id, mime_type):
     request = drive_service.files().get_media(fileId=file_id)
     file_data = io.BytesIO()
+    print(f"Downloading file {file_id}...")
     downloader = MediaIoBaseDownload(file_data, request)
     done = False
     while not done:
@@ -89,31 +74,12 @@ def download_file_content(file_id, mime_type):
         print(f"Error extracting text from file {file_id}: {e}")
         return ""
 
-
-# === MANUAL KEYWORD CLASSIFICATION ===
-# # def classify_document_by_keywords(text):
-#     text = text.lower()
-#     category_scores = {}
-
-#     for category, keywords in CATEGORIES.items():
-#         score = sum(text.count(keyword) for keyword in keywords)
-#         category_scores[category] = score
-
-#     best_category = max(category_scores, key=category_scores.get)
-#     if category_scores[best_category] > 0:
-#         return best_category
-#     return "Uncategorized"
-
-
 # ===== CATEGORIZE USING AI ===
 def categorize_and_tag_geminiai(text):
-    prompt = (
-        "Categorize the following document and suggest 3-5 relevant tags."
-        "Text:\n" + text + "\n\n"
-    )
     response = client.models.generate_content(
         model="gemini-2.0-flash",
-        contents = prompt
+        contents = "Categorize the following document and suggest 3-5 relevant tags."
+                    "Text:\n" + text + "\n\n"
     )
     
     return response
@@ -121,16 +87,34 @@ def categorize_and_tag_geminiai(text):
 def extract_category_from_response(response):
     try:
         # Extract the raw text from the Gemini response
-        raw_text = response.text if hasattr(response, 'text') else response.candidates[0].content.parts[0].text
+        raw_text = None
+        if hasattr(response, 'text'):
+            raw_text = response.text
+        elif hasattr(response, 'candidates') and response.candidates:
+            # Try to get text from the first candidate's content parts
+            candidate = response.candidates[0]
+            if hasattr(candidate, 'content') and hasattr(candidate.content, 'parts') and candidate.content.parts:
+                part = candidate.content.parts[0]
+                if hasattr(part, 'text'):
+                    raw_text = part.text
 
-        # Extract the JSON block from the response
-        match = re.search(r'```json\s*({.*?})\s*```', raw_text, re.DOTALL)
+        if not raw_text:
+            return "Uncategorized"
+
+        # Try to extract category from "**Category:**" or similar pattern
+        match = re.search(r"\*\*Category:\*\*\s*\n?\s*[*-]?\s*(.+)", raw_text)
         if match:
-            parsed_json = json.loads(match.group(1))
-            return parsed_json.get("category", "Uncategorized")
+            category_line = match.group(1).strip()
+            # Remove markdown formatting if present
+            category_line = re.sub(r"[*`]", "", category_line)
+            # Sometimes category is followed by tags or newlines, so split on newlines
+            category = category_line.split('\n')[0].strip()
+            print(f"Extracted category: {category}")
+            return category if category else "Uncategorized"
+
     except Exception as e:
         print(f"Error extracting category: {e}")
-    
+
     return "Uncategorized"
 
 # === MOVE FILE TO CATEGORY FOLDER ===
@@ -165,6 +149,7 @@ def move_file_to_category(file_id, category):
 def categorize_and_move_file(file_id, file_name, mime_type):
     print(f"\nProcessing: {file_name}")
     content = download_file_content(file_id, mime_type)
+    print(f"Extracted content from {file_name} ({mime_type}):\n{content[:100]}...")  # Print first 100 characters
 
     if not content.strip():
         print("No extractable content found.")
@@ -176,16 +161,6 @@ def categorize_and_move_file(file_id, file_name, mime_type):
     print(f"Classified as: {category}")
     move_file_to_category(file_id, category)
     print(f"Moved '{file_name}' to folder: {category}")
-
-# # === ADD TAGS TO GOOGLE DRIVE FILES ===
-# def add_tags_to_file(drive_service, file_id, tags):
-#     custom_properties = {f"tag_{i}": tag for i, tag in enumerate(tags)}
-#     file_metadata = {'properties': custom_properties}
-#     drive_service.files().update(
-#         fileId = file_id,
-#         body = file_metadata,
-#         fileIds = 'id, properties'
-#     ).execute()
 
 
 # === BATCH PROCESS FILES ===
@@ -202,7 +177,7 @@ def process_all_drive_files():
         print(f"-> {file['name']} ({file['mimeType']})")
         categorize_and_move_file(file['id'], file['name'], file['mimeType'])
 
-# === MAIN ===
+# # === MAIN ===
 if __name__ == "__main__":
     print("Starting AI-free, keyword-based categorization of Drive files...")
     process_all_drive_files()
