@@ -13,6 +13,8 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google import genai
 import json
 import re
+from dotenv import load_dotenv
+import os
 
 
 # === CONFIGURATION ===
@@ -20,7 +22,13 @@ SERVICE_ACCOUNT_FILE = "token.json"
 SCOPES = ["https://www.googleapis.com/auth/drive"]
 PROJECT_ID = "categorizer-464114"  # Only required for Vertex AI (not used here)
 
-client = genai.Client(api_key="AIzaSyA5dqjjQUhrLlNIqWVRHLXLTPfrmB3IT8U")
+load_dotenv()
+
+GENAI_API_KEY = os.getenv("GENAI_API_KEY")
+if not GENAI_API_KEY:
+    raise ValueError("GENAI_API_KEY not found in environment variables. Please set it in your .env file.")
+
+client = genai.Client(api_key=GENAI_API_KEY)
 
 # === INITIALIZE GOOGLE APIs ===
 creds = None
