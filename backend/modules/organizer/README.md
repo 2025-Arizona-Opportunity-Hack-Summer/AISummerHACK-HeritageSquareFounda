@@ -9,10 +9,6 @@ This module automatically categorizes and organizes files in your Google Drive u
 - **Batch processing:** Processes all supported files in your Drive in one go.
 
 ## Requirements
-
-- **Google Drive API credentials:**  
-  - Download your `credentials.json` from the [Google Cloud Console](https://console.cloud.google.com/apis/credentials).
-  - Place it in the same directory as the scripts.
 - **Gemini API Key:**  
   - Get your Gemini API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
   - Add it to a `.env` file as `GENAI_API_KEY=your_key_here`.
@@ -20,61 +16,16 @@ This module automatically categorizes and organizes files in your Google Drive u
 - **Python packages:**  
   - Install requirements with:
     ```bash
-    pip install google-api-python-client google-auth google-auth-oauthlib python-dotenv pdfplumber python-docx pillow pytesseract
+    pip install python-dotenv  
     ```
-  - [Tesseract OCR](https://github.com/tesseract-ocr/tesseract) must be installed and its path set in `file_utils.py`.
-
 ## Additional Requirements by File
 
 Below are the extra Python packages you may need for specific files in this module:
-
-### `file_utils.py`
-
-- **pdfplumber** (for PDF text extraction)
-- **python-docx** (for DOCX text extraction)
-- **pillow** (for image processing)
-- **pytesseract** (for OCR)
-
-Install with:
 
 ### `genai_client.py`
 
 - **python-dotenv** (for loading environment variables)
 - **google-generativeai** (for Gemini API access)
-
-Install with:
-
-### `drive_auth.py`, `folder_utils.py`, `file_utils.py`, `categorizer.py`
-
-- **google-api-python-client**
-- **google-auth**
-- **google-auth-oauthlib**
-
-Install with:
-
-### System Requirements
-
-- **Tesseract OCR** must be installed on your system for OCR to work.  
-  Download from: https://github.com/tesseract-ocr/tesseract
-
-
-## Setup
-
-1. **Credentials:**
-   - Place your `credentials.json` in the module directory.
-   - The script will generate a `token.json` on first run for authentication.
-
-2. **Gemini API Key:**
-
-- Create a `.env` file in the module directory:
-
-```bash
-GENAI_API_KEY=your_gemini_api_key_here
-```
-
-3. **Tesseract OCR:**
-   - Install Tesseract and ensure the path in `file_utils.py` matches your installation.
-
 
 ## Usage
 
@@ -96,9 +47,7 @@ python categorizer.py
 ## File Structure
 
 - `categorizer.py` — Main entry point.
-- `drive_auth.py` — Handles Google Drive authentication.
 - `genai_client.py` — Handles Gemini API client.
-- `file_utils.py` — File download, OCR, and content extraction.
 - `folder_utils.py` — Folder management, merging, and cleanup.
 - `categorization.py` — AI categorization logic.
 
@@ -112,7 +61,6 @@ python categorizer.py
 
 - **Quota errors:** Wait for your Gemini quota to reset or upgrade your plan.
 - **Authentication errors:** Delete `token.json` and re-run to re-authenticate.
-- **Tesseract errors:** Ensure Tesseract is installed and the path is correct.
 
 ## License
 
