@@ -6,8 +6,8 @@
 }
 
 ul {
-  width: 50%;
-  margin-left: 25%;
+  width: 60%;
+  margin-left: 20%;
   padding: 0;
 
   top: 0;
@@ -23,9 +23,9 @@ li {
 }
 .query {
   background-color: lightgray;
-  width: 50%;
+  width: 40%;
   padding: 10px;
-  margin-left:50%;
+  margin-left:60%;
   margin-top: 25px;
   margin-bottom: 25px;
 }
@@ -62,4 +62,25 @@ textarea {
   text-align: left;
   vertical-align: top;
   line-height: 1.4;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#enter-btn {
+  background-color: lightgray;
+}
+
+.buttonSubContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 40%;
+}
+
+.buttonSubContainer button {
+  background-color: #f4f4f4;
 }

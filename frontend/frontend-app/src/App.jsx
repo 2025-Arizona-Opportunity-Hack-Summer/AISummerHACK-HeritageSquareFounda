@@ -75,12 +75,17 @@ function App() {
     </div>
 
     <div className="bottomBar">
-      <textarea ref={textAreaRef} type="text" value={query} placeholder="Query" onChange={(e) => setQuery(e.target.value)}/>
+      <textarea ref={textAreaRef} type="text" value={query} placeholder="Prompt" onChange={(e) => setQuery(e.target.value)}/>
       <br></br>
       <br></br>
-      <button onClick={() => getQueryResponse(query)}>
-          Enter query
-      </button>
+      <div className="buttonContainer">
+        <button id={"enter-btn"} onClick={() => getQueryResponse(query)}>
+            Enter prompt
+        </button>
+        <div className="buttonSubContainer">
+          <button>Organize Files</button>
+        </div>
+      </div>
     </div>
     </>
   )
