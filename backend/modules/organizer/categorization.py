@@ -13,8 +13,8 @@ def categorize_image_with_genai_vision(file_data):
         try:
             img = Image.open(file_data)
             img.verify()
-        except Exception as img_e:
-            print(f"Image verification failed: {img_e}")
+        except Exception as imgae:
+            print(f"Image verification failed: {imgae}")
             return "Uncategorized"
         file_data.seek(0)
         prompt = (
