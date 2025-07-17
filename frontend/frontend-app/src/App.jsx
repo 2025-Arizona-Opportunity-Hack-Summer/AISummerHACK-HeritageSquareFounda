@@ -56,6 +56,46 @@ function App() {
     }
   }, [query]);
 
+
+  /*
+    Variable and functions for uploading files
+  */
+  const [uploadingFiles, setUploadingFiles] = useState(false);
+  const [files, setFiles] = useState([]);
+  const inputRefs = useRef({});
+  const inputIdCounter = useRef(0);
+
+  const handleFileChange = (event, inputId) => {
+    const file = event.target.files[0];
+
+    // add file to list
+    if (file){
+      setFiles((prev) => [...prev, {id: inputId, file: event.target.files[0]}]);
+      inputIdCounter.current += 1;
+    }
+  };
+
+  const renderFileInputs = (nextInputId) => {
+    return (
+      <>
+      <label htmlFor="input-file">Choose File</label>
+      <input
+        id="input-file"
+        key={nextInputId}
+        type="file"
+        accept=".pdf, .doc, .docx"
+        onChange={(event) => handleFileChange(event, nextInputId)}
+        ref={(ref) => (inputRefs.current[nextInputId] = ref)}
+      />
+      </>
+    )
+  }
+
+  const removeFile = (fileIndex) => {
+    setFiles((prev) => prev.filter((fileObj) => fileObj.id !== fileIndex));
+    delete inputRefs.current[fileIndex];
+  }
+
   return (
     <>
     <div>
@@ -75,15 +115,34 @@ function App() {
     </div>
 
     <div className="bottomBar">
-      <textarea ref={textAreaRef} type="text" value={query} placeholder="Prompt" onChange={(e) => setQuery(e.target.value)}/>
-      <br></br>
-      <br></br>
-      <div className="buttonContainer">
-        <button id={"enter-btn"} onClick={() => getQueryResponse(query)}>
-            Enter prompt
-        </button>
-        <div className="buttonSubContainer">
-          <button>Organize Files</button>
+      {uploadingFiles?
+        <div className="fileUploadContainer">
+          {renderFileInputs(inputIdCounter.current)}
+        
+          <div id="fileList">
+          {files.toReversed().map((item) => (
+            <li key={item.id}>
+              <p>{item.file.name}</p>
+              <button onClick={() => {removeFile(item.id)}}>X</button>
+            </li>
+          ))}
+          </div>
+          <button>Upload Files</button>
+          <button onClick={() => {setUploadingFiles(!uploadingFiles); setFiles([]);}}>Cancel</button>
+        </div>
+      : null}
+
+      <div id={"constantVisibility"}>
+        <textarea ref={textAreaRef} type="text" value={query} placeholder="Prompt" onChange={(e) => setQuery(e.target.value)}/>
+
+        <div className="buttonContainer">
+          <button id={"enter-btn"} onClick={() => getQueryResponse(query)}>
+              Enter prompt
+          </button>
+          <div className="buttonSubContainer">
+            <button>Organize Files</button>
+            <button onClick={() => setUploadingFiles(!uploadingFiles)}>Upload Files</button>
+          </div>
         </div>
       </div>
     </div>
