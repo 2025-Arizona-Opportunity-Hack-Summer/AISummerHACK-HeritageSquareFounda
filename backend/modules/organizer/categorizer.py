@@ -24,6 +24,6 @@ if __name__ == "__main__":
     print("Starting Drive categorization...")
     process_all_drive_files()
     existing_folders = get_existing_folders()
-    merge_and_cleanup_folders(existing_folders, cutoff=0.3)
-    remove_empty_folders()
+    merge_and_cleanup_folders(existing_folders, cutoff=0.4)
+   # remove_empty_folders()
     print("Done.")
