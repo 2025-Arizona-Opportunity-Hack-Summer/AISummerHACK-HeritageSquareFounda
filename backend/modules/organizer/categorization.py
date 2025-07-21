@@ -7,6 +7,10 @@ from google import genai
 
 client = genai_client()
 
+ALLOWED_CATEGORIES = {
+    "Curation", "Employee Resources", "Images", "Interviews", "Research", "Restoration"
+}
+
 def categorize_image_with_genai_vision(file_data):
     try:
         file_data.seek(0)
@@ -18,8 +22,9 @@ def categorize_image_with_genai_vision(file_data):
             return "Uncategorized"
         file_data.seek(0)
         prompt = (
-            "Categorize the following image based on its content and suggest 1 relevant tag.\n"
-            "Please provide a single category that best describes the image.\n"
+            "Categorize the image based on its content. Choose only from the following:\n"
+            "Curation, Employee Resources, Images, Interviews, Research, Restoration.\n"
+            "Reply in the format:\n**Category:** <category>"
         )
         try:
             response = client.models.generate_content(
@@ -44,9 +49,15 @@ def categorize_image_with_genai_vision(file_data):
 
 def categorize_and_tag_geminiai(text):
     try:
+        prompt = (
+            "Categorize the following document into one of the following categories only:\n"
+            "Curation, Employee Resources, Images, Interviews, Research, Restoration.\n\n"
+            "Reply in the format:\n**Category:** <category>\n\n"
+            f"Text:\n{text}"
+        )
         response = client.models.generate_content(
             model="gemini-2.0-flash",
-            contents=[f"Categorize the following document and suggest 1 relevant tag.\nText:\n{text}\n\n"]
+            contents=[prompt]
         )
         return response
     except genai.errors.ClientError as e:
@@ -69,13 +80,20 @@ def extract_category_from_response(response):
                     raw_text = part.text
         if not raw_text:
             return "Uncategorized"
+
         match = re.search(r"\*\*Category:\*\*\s*\n?\s*[*-]?\s*(.+)", raw_text)
         if match:
             category_line = match.group(1).strip()
             category_line = re.sub(r"[*]", "", category_line)
             category = category_line.split('\n')[0].strip()
-            print(f"Extracted category: {category}")
-            return category if category else "Uncategorized"
+
+            # Check against allowed categories
+            if category in ALLOWED_CATEGORIES:
+                print(f"Extracted category: {category}")
+                return category
+            else:
+                print(f"Invalid category received: {category}")
+                return "Uncategorized"
     except Exception as e:
         print(f"Error extracting category: {e}")
     return "Uncategorized"
