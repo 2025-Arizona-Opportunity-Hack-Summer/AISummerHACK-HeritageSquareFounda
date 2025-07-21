@@ -1,6 +1,7 @@
 #routes.py
 from fastapi import APIRouter
-from backend.modules.organizer.categorizer import process_all_drive_files
+from modules.organizer.categorizer import process_all_drive_files
+from modules.organizer.upload_file import upload_file
 
 router = APIRouter()
 
@@ -13,5 +14,13 @@ def run_categorizer():
     try:
         process_all_drive_files()
         return {"status": "success", "message": "Files categorized successfully"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+@router.put("/upload")
+def run_upload():
+    try:
+        upload_file()
+        return {"status": "success", "message": "File uploaded successfully"}
     except Exception as e:
         return {"status": "error", "message": str(e)}

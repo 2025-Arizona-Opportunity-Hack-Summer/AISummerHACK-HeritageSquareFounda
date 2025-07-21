@@ -1,6 +1,6 @@
-from drive_auth import drive_auth
-from folder_utils import batch_move_files, merge_and_cleanup_folders, remove_empty_folders, get_existing_folders
-from categorization import batch_categorize_files
+from modules.organizer.drive_auth import drive_auth
+from modules.organizer.folder_utils import batch_move_files, merge_and_cleanup_folders, remove_empty_folders, get_existing_folders
+from modules.organizer.categorization import batch_categorize_files
 
 drive_service = drive_auth()
 

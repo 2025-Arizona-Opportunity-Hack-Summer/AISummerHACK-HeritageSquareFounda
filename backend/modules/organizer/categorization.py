@@ -1,6 +1,6 @@
-from genai_client import genai_client
-from file_utils import download_file_content, extract_text_from_image
-from folder_utils import get_existing_folders
+from modules.organizer.genai_client import genai_client
+from modules.organizer.file_utils import download_file_content, extract_text_from_image
+from modules.organizer.folder_utils import get_existing_folders
 import re
 from PIL import Image
 from google import genai

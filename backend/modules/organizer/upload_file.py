@@ -1,4 +1,4 @@
-from drive_auth import drive_auth
+from modules.organizer.drive_auth import drive_auth
 from googleapiclient.http import MediaFileUpload
 import os
 

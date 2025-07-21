@@ -1,5 +1,5 @@
 from googleapiclient.http import MediaIoBaseDownload
-from drive_auth import drive_auth
+from modules.organizer.drive_auth import drive_auth
 import io
 import pdfplumber
 import docx
