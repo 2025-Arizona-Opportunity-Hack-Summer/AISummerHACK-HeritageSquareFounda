@@ -3,12 +3,40 @@ import './App.css'
 import React from 'react';
 
 function App() {
+  const [isMobile, setIsMobilte] = useState(false);
+
+  // variables for chat ui
   const [query, setQuery] = useState('');
   const textAreaRef = useRef(null);
 
   const [discussion, setDiscussions] = useState([]);
   const discussionEndRef = useRef(null);
+
+  // variables for uploading files
+  const [uploadingFiles, setUploadingFiles] = useState(false);
+  const [files, setFiles] = useState([]);
+  const inputRefs = useRef({});
+  const inputIdCounter = useRef(0);
+
+  // check screen size and set isMobile
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobilte(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    }
+  }, []);
   
+
+  /*
+    Functions for chat ui
+  */
+
   // automatically scroll to most recent query and response
   const scrollToBottom = () => {
     discussionEndRef.current?.scrollIntoView({ 
@@ -54,16 +82,12 @@ function App() {
       textarea.style.overflowY = textarea.scrollHeight > maxHeight ? 'auto' : 'hidden';
       textarea.style.height = Math.min(textarea.scrollHeight, maxHeight) + 'px';
     }
-  }, [query]);
+  }, [query, uploadingFiles]);
 
 
   /*
-    Variable and functions for uploading files
+    Functions for uploading files
   */
-  const [uploadingFiles, setUploadingFiles] = useState(false);
-  const [files, setFiles] = useState([]);
-  const inputRefs = useRef({});
-  const inputIdCounter = useRef(0);
 
   const handleFileChange = (event, inputId) => {
     const file = event.target.files[0];
@@ -78,7 +102,7 @@ function App() {
   const renderFileInputs = (nextInputId) => {
     return (
       <>
-      <label htmlFor="input-file">Choose File</label>
+      <label htmlFor="input-file">Choose Files</label>
       <input
         id="input-file"
         key={nextInputId}
@@ -98,6 +122,7 @@ function App() {
 
   return (
     <>
+    {/* discussion thread */}
     <div>
       <ul>
         {discussion.length == 0 ? null : discussion.map(exchange => (
@@ -114,6 +139,10 @@ function App() {
       <div id="discussionEnd" ref={discussionEndRef}></div>
     </div>
 
+    {/* main ui interface */}
+    {!isMobile?
+    /* for desktop */
+    <div id="desktop">
     <div className="bottomBar">
       {uploadingFiles?
         <div className="fileUploadContainer">
@@ -127,7 +156,7 @@ function App() {
             </li>
           ))}
           </div>
-          <button>Upload Files</button>
+          <button>Upload</button>
           <button onClick={() => {setUploadingFiles(!uploadingFiles); setFiles([]);}}>Cancel</button>
         </div>
       : null}
@@ -136,8 +165,8 @@ function App() {
         <textarea ref={textAreaRef} type="text" value={query} placeholder="Prompt" onChange={(e) => setQuery(e.target.value)}/>
 
         <div className="buttonContainer">
-          <button id={"enter-btn"} onClick={() => getQueryResponse(query)}>
-              Enter prompt
+          <button className="enter-btn" onClick={() => getQueryResponse(query)}>
+              Enter Prompt
           </button>
           <div className="buttonSubContainer">
             <button>Organize Files</button>
@@ -146,6 +175,56 @@ function App() {
         </div>
       </div>
     </div>
+    </div>
+    : 
+    <div id="mobile">
+    <div className="bottomBar">
+      {!uploadingFiles? 
+      <div id={"constantVisibility"}>
+        <textarea ref={textAreaRef} type="text" value={query} placeholder="Prompt" onChange={(e) => setQuery(e.target.value)}/>
+
+        <div className="buttonContainer">
+          <button className="enter-btn" onClick={() => getQueryResponse(query)}>
+              Enter Prompt
+          </button>
+
+          <div className="buttonSubContainer">
+            <button>Organize Files</button>
+            <button onClick={() => setUploadingFiles(!uploadingFiles)}>Upload Files</button>
+          </div>
+        </div>
+      </div>
+      : 
+      <div id={"constantVisibility"}>
+        <div className="buttonContainer">
+
+          <div className="fileUploadContainer">
+            {renderFileInputs(inputIdCounter.current)}
+          
+            <div id="fileList">
+              {files.toReversed().map((item) => (
+                <li key={item.id}>
+                  <p>{item.file.name}</p>
+                  <button onClick={() => {removeFile(item.id)}}>X</button>
+                </li>
+              ))}
+            </div>
+
+            <button>Upload</button>
+            <button onClick={() => {setUploadingFiles(!uploadingFiles); setFiles([]);}}>Cancel</button>
+          </div>
+
+          <div className="buttonSubContainer">
+            <button>Organize Files</button>
+            <button onClick={() => setUploadingFiles(!uploadingFiles)}>Upload Files</button>
+          </div>
+
+        </div>
+      </div>
+      }
+    </div>
+    </div>
+    }
     </>
   )
 }
