@@ -1,5 +1,4 @@
 from drive_auth import drive_auth
-import re
 import difflib
 
 drive_service = drive_auth()
@@ -12,7 +11,7 @@ def get_existing_folders():
     ).execute()
     return {folder['name'].strip().lower(): folder['id'] for folder in results.get('files', [])}
 
-def find_best_folder_match(category, existing_folders, cutoff=0.8):
+def find_best_folder_match(category, existing_folders, cutoff=0.4):
     """
     Find the best matching folder for the category using fuzzy matching.
     Returns the folder name (lowercase) if found, else None.
@@ -58,7 +57,7 @@ def batch_move_files(category_to_files, existing_folders):
         for file_id in file_ids:
             move_file_to_folder(file_id, folder_id, category)
 
-def group_similar_folders(existing_folders, cutoff=0.3):
+def group_similar_folders(existing_folders, cutoff=0.6):
     """
     Groups similar folder names using fuzzy matching.
     Returns a dict: {canonical_folder_name: [duplicate_folder_names]}
