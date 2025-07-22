@@ -16,7 +16,8 @@ This module automatically categorizes and organizes files in your Google Drive u
 - **Python packages:**  
   - Install requirements with:
     ```bash
-    pip install python-dotenv  
+    pip install python-dotenv genai difflib PIL
+    ```
     ```
 ## Additional Requirements by File
 
@@ -30,13 +31,10 @@ Below are the extra Python packages you may need for specific files in this modu
 ## Usage
 
 1. **Run the categorizer:**
-
+  ```bash
+  python categorizer.py
+  ```
 2. **What happens:**
-
-```bash
-python categorizer.py
-```
-
 - This will start the categorization process for all files in your Google Drive.
 - The script will authenticate with Google Drive.
 - It will scan your Drive for supported files (PDF, DOCX, images).
@@ -52,7 +50,6 @@ python categorizer.py
 - `categorization.py` — AI categorization logic.
 
 ## Notes
-
 - **Quota:** The Gemini API has daily and rate limits. If you hit a quota, the script will notify you.
 - **Safety:** The script moves and deletes folders/files. Test on a non-critical Drive account first.
 - **Customization:** You can adjust the folder similarity cutoff in `categorizer.py` (`merge_and_cleanup_folders(existing_folders, cutoff=0.3)`).

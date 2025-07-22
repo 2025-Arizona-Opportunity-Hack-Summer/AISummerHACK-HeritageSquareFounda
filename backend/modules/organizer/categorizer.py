@@ -1,6 +1,6 @@
-from drive_auth import drive_auth
-from folder_utils import batch_move_files, merge_and_cleanup_folders, remove_empty_folders, get_existing_folders
-from categorization import batch_categorize_files
+from modules.organizer.drive_auth import drive_auth
+from modules.organizer.folder_utils import batch_move_files, merge_and_cleanup_folders, remove_empty_folders, get_existing_folders
+from modules.organizer.categorization import batch_categorize_files
 
 drive_service = drive_auth()
 
@@ -10,7 +10,7 @@ def process_all_drive_files():
         "application/pdf",
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
     ] + image_mimes])
-    query = f"({mime_query}) and trashed=false"
+    query = f"({mime_query}) and trashed=false and 'root' in parents"
     results = drive_service.files().list(
         q=query,
         fields="files(id, name, mimeType)"
@@ -24,6 +24,6 @@ if __name__ == "__main__":
     print("Starting Drive categorization...")
     process_all_drive_files()
     existing_folders = get_existing_folders()
-    merge_and_cleanup_folders(existing_folders, cutoff=0.3)
+    merge_and_cleanup_folders(existing_folders, cutoff=0.4)
     remove_empty_folders()
     print("Done.")
