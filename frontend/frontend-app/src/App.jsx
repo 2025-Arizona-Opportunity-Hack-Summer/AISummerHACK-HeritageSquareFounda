@@ -4,6 +4,7 @@ import React from 'react';
 
 function App() {
   const [isMobile, setIsMobilte] = useState(false);
+  const [msg, setMsg] = useState('');
 
   // variables for chat ui
   const [query, setQuery] = useState('');
@@ -52,6 +53,7 @@ function App() {
   
   // send query and get/display response and query in discussion
   const getQueryResponse = async (query) => {
+    setMsg('')
     // move query into discussion
     const ogDiscussion = discussion;
     setDiscussions([...discussion, {id: discussion.length, query: query, response: "generating..."}])
@@ -95,10 +97,11 @@ function App() {
     Function for organizing files
   */
   const organizeFiles = async () => {
+    setMsg('');
     // trigger file organization
     try {
-      const response = await fetch(`/api/...`, {
-        method: 'GET'
+      const response = await fetch(`/api/categorize`, {
+        method: 'POST'
       });
       if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -106,9 +109,11 @@ function App() {
 
       const data = await response.json();
       console.log(data.response);
+      setMsg('Completed organizing files.');
     }
     catch (err) {
       console.log("Organizing failed:", err);
+      setMsg('Failed to organize files.');
     }
   }
 
@@ -151,11 +156,17 @@ function App() {
     const formData = new FormData();
 
     files.forEach((fileObj, index) => {
-      formData.append(`file${index}`, fileObl.file);
+      formData.append(`file${index}`, fileObj.file);
     })
+
+    console.log("data being sent:");
+    for (let pair of formData.entries()) {
+      console.log(pair[0]+ ':', pair[1]);
+    }
+
     // upload files to api
     try {
-      const response = await fetch(`/api/...`, {
+      const response = await fetch(`/api/upload`, {
         method: 'POST',
         body: formData
       });
@@ -166,9 +177,11 @@ function App() {
 
       const data = await response.json();
       console.log(data.response);
+      setMsg('Uploaded files.');
     }
     catch (err) {
       console.log("Upload failed:", err);
+      setMsg('Failed to upload files.');
     }
   }
 
@@ -209,12 +222,16 @@ function App() {
           ))}
           </div>
           <button onClick={() => uploadFiles()}>Upload</button>
-          <button onClick={() => {setUploadingFiles(!uploadingFiles); setFiles([]);}}>Cancel</button>
+          <button onClick={() => {setUploadingFiles(!uploadingFiles); setFiles([]); setMsg('')}}>Cancel</button>
         </div>
       : null}
 
       <div id={"constantVisibility"}>
         <textarea ref={textAreaRef} type="text" value={query} placeholder="Prompt" onChange={(e) => setQuery(e.target.value)}/>
+
+        {msg != ''?
+        <p className="msg">{msg}</p>
+        : null}
 
         <div className="buttonContainer">
           <button className="enter-btn" onClick={() => getQueryResponse(query)}>
@@ -222,7 +239,7 @@ function App() {
           </button>
           <div className="buttonSubContainer">
             <button onClick={() => organizeFiles()}>Organize Files</button>
-            <button onClick={() => setUploadingFiles(!uploadingFiles)}>Upload Files</button>
+            <button onClick={() => {setUploadingFiles(!uploadingFiles); setMsg('')}}>Upload Files</button>
           </div>
         </div>
       </div>
@@ -240,10 +257,15 @@ function App() {
               Enter Prompt
           </button>
 
+          {msg != ''?
+          <p className="msg">{msg}</p>
+          : null}
+
           <div className="buttonSubContainer">
             <button onClick={() => organizeFiles()}>Organize Files</button>
-            <button onClick={() => setUploadingFiles(!uploadingFiles)}>Upload Files</button>
+            <button onClick={() => {setUploadingFiles(!uploadingFiles); setMsg('')}}>Upload Files</button>
           </div>
+
         </div>
       </div>
       : 
@@ -263,12 +285,12 @@ function App() {
             </div>
 
             <button onClick={() => uploadFiles()}>Upload</button>
-            <button onClick={() => {setUploadingFiles(!uploadingFiles); setFiles([]);}}>Cancel</button>
+            <button onClick={() => {setUploadingFiles(!uploadingFiles); setFiles([]); setMsg('')}}>Cancel</button>
           </div>
 
           <div className="buttonSubContainer">
-            <button>Organize Files</button>
-            <button onClick={() => setUploadingFiles(!uploadingFiles)}>Upload Files</button>
+            <button onClick={() => organizeFiles()}>Organize Files</button>
+            <button onClick={() => {setUploadingFiles(!uploadingFiles); setMsg('')}}>Upload Files</button>
           </div>
 
         </div>

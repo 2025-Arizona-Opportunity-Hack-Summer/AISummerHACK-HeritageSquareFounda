@@ -188,7 +188,7 @@ input[type='file'] {
 }
 
 #desktop textarea {
-  margin-bottom: 25px;
+  margin-bottom: 10px;
 }
 
 #desktop .buttonContainer {
@@ -206,6 +206,15 @@ input[type='file'] {
 }
 #desktop .buttonSubContainer button {
   margin-left: 15px;
+}
+
+#desktop .msg {
+  width: 100%;
+  
+  border-top: 1px solid gray;
+  border-bottom: 1px solid gray;
+  margin-top: 0px;
+  margin-bottom: 10px;
 }
 
 
@@ -244,10 +253,19 @@ input[type='file'] {
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
-  
+
   border-top: 1px solid gray;
   padding-top: 5px;
 }
+
+#mobile .msg {
+  width: 100%;
+  
+  border-top: 1px solid gray;
+  padding-top: 5px;
+  margin-bottom: 5px;
+}
+
 
 #mobile .fileUploadContainer {
   align-self: center;
