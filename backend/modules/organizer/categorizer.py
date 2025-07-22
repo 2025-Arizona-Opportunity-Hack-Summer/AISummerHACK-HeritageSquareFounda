@@ -25,5 +25,5 @@ if __name__ == "__main__":
     process_all_drive_files()
     existing_folders = get_existing_folders()
     merge_and_cleanup_folders(existing_folders, cutoff=0.4)
-   # remove_empty_folders()
+    remove_empty_folders()
     print("Done.")
