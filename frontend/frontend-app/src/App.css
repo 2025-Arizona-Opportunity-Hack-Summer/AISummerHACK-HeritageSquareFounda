@@ -1,0 +1,257 @@
+#root {
+  margin: 0 auto;
+  padding: 0;
+  text-align: center;
+  width: 100%;
+}
+
+/*
+  Discussion Thread
+*/
+ul {
+  padding: 0;
+  top: 0;
+}
+li {
+  list-style-type: none;
+  text-align: left;
+  margin-bottom: 5px;
+  border-radius: 1.5cap;
+  padding: 10px;
+  overflow-x: auto;
+}
+@media (min-width: 769px) {
+  ul {
+    width: 57.5%;
+    margin-left: 20%;
+  }
+  .query {
+    background-color: lightgray;
+    width: 40%;
+    padding: 10px;
+    margin-left:60%;
+    margin-top: 25px;
+    margin-bottom: 25px;
+  }
+  .response {
+    background-color: white;
+    width: 100%;
+  }
+}
+@media (max-width: 768px) {
+    ul {
+      width: 75%;
+      margin-left: 9%;
+    }
+  .query {
+    background-color: lightgray;
+    padding: 10px;
+    width: 60%;
+    margin-left:40%;
+    margin-top: 25px;
+    margin-bottom: 25px;
+  }
+  .response {
+    background-color: white;
+    width: 100%;
+  }
+}
+#discussionEnd {
+  background-color: white;
+  height: 275px;
+}
+
+/*
+  Universal Bottom Bar
+*/
+.bottomBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+
+  z-index: 1000;
+
+  display: flex;
+  flex-direction: column;
+}
+.bottomBar #constantVisibility {
+  background-color: white;
+  padding-bottom: 20px;
+}
+textarea {
+  width: 100%;
+
+  padding: 10px;
+  box-sizing: border-box;
+  border: 1px solid gray;
+
+  resize: none; 
+  overflow-y:auto;
+
+  text-align: left;
+  vertical-align: top;
+  line-height: 1.4;
+}
+.enter-btn {
+  border: 2px solid #0C3622;
+  background-color: #0C3622;
+  color: white;
+}
+.buttonSubContainer button {
+  border: 2px solid #0C3622;
+  background-color: white;
+  color: #0C3622;
+}
+
+
+.fileUploadContainer {
+  margin-bottom: 0px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  background-color: white;
+  border: 1px solid gray;
+  border-bottom: none;
+  border-radius: 3px;
+  padding: 5px;
+
+  width: 250px;
+  z-index: 1000;
+}
+
+input[type='file'] {
+    display: none;
+}
+.fileUploadContainer label {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+
+  border: 2px solid #F3F5F4;
+  background-color: #F3F5F4;
+  color: #0C3622;
+
+  cursor: pointer;
+  transition: border-color 0.25s;
+  margin-bottom: 5px;
+}
+
+.fileUploadContainer button {
+  margin-top: 5px;
+  border: 2px solid #F3F5F4;
+  background-color: #F3F5F4;
+  color: #0C3622;
+}
+
+.fileUploadContainer #fileList {
+  min-height: 50px;
+  max-height: 300px;
+  overflow: auto;
+}
+.fileUploadContainer li{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  background-color: #F3F5F4;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+.fileUploadContainer p{
+  overflow-wrap:break-word;
+  font-size: 0.9em;
+  width: 80%;
+}
+
+.fileUploadContainer li button {
+  background-color: inherit;
+  text-align: center;
+  text-justify: center;
+  padding: 5px;
+  width: 20%;
+  height:fit-content;
+}
+
+/*
+  Desktop specific
+*/
+#desktop .bottomBar {
+  width: 60%; 
+  margin-left: 20%;
+}
+
+#desktop textarea {
+  margin-bottom: 25px;
+}
+
+#desktop .buttonContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+#desktop .buttonSubContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 40%;
+}
+#desktop .buttonSubContainer button {
+  margin-left: 15px;
+}
+
+
+#desktop .fileUploadContainer {
+  align-self: flex-end;
+}
+
+/*
+  Mobile specific
+*/
+#mobile .bottomBar {
+  width: 80%; 
+  margin-left: 10%;
+}
+
+#mobile textarea {
+  padding-bottom: 10px;
+}
+
+#mobile .buttonContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 5px;
+}
+
+#mobile .enter-btn {
+  width: fit-content;
+  margin-left: 0%;
+  margin-bottom: 5px;
+}
+
+#mobile .buttonSubContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  
+  border-top: 1px solid gray;
+  padding-top: 5px;
+}
+
+#mobile .fileUploadContainer {
+  align-self: center;
+  width: 97%;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
