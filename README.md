@@ -49,6 +49,8 @@ File Classifier / Search / Reorganizer
 UI Chat Interface
 ```
 
+DevPost: https://devpost.com/software/heritage-square-foundation
+
 ### File Structure
 
 ```bash

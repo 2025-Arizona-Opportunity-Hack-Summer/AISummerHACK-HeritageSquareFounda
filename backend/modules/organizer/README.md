@@ -18,6 +18,16 @@ This module automatically categorizes and organizes files in your Google Drive u
     ```bash
     pip install python-dotenv genai difflib PIL
     ```
+    ```
+## Additional Requirements by File
+
+Below are the extra Python packages you may need for specific files in this module:
+
+### `genai_client.py`
+
+- **python-dotenv** (for loading environment variables)
+- **google-generativeai** (for Gemini API access)
+
 ## Usage
 
 1. **Run the categorizer:**
