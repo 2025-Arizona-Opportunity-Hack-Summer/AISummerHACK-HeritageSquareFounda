@@ -57,12 +57,18 @@ function App() {
     setDiscussions([...discussion, {id: discussion.length, query: query, response: "generating..."}])
     setQuery("");
 
-    // send query and get response back
+    // send query and get response back (can be changed to use POST method)
     try {
-      await fetch(`/api/query?q=${encodeURIComponent(query)}`).then(res => res.json()).then(data => {
-        setDiscussions([...ogDiscussion, {id: discussion.length, query: query, response: data.response}])
-        console.log(data.response);
+      const response = await fetch(`/api/query?q=${encodeURIComponent(query)}`, {
+        method: 'GET'
       });
+      if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      
+      setDiscussions([...ogDiscussion, {id: discussion.length, query: query, response: data.response}])
+      console.log(data.response);
     }
     catch {
       setDiscussions([...ogDiscussion, {id: discussion.length, query: query, response: "An error has occurred"}]);
@@ -84,6 +90,27 @@ function App() {
     }
   }, [query, uploadingFiles]);
 
+
+  /*
+    Function for organizing files
+  */
+  const organizeFiles = async () => {
+    // trigger file organization
+    try {
+      const response = await fetch(`/api/...`, {
+        method: 'GET'
+      });
+      if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log(data.response);
+    }
+    catch (err) {
+      console.log("Organizing failed:", err);
+    }
+  }
 
   /*
     Functions for uploading files
@@ -118,6 +145,31 @@ function App() {
   const removeFile = (fileIndex) => {
     setFiles((prev) => prev.filter((fileObj) => fileObj.id !== fileIndex));
     delete inputRefs.current[fileIndex];
+  }
+
+  const uploadFiles = async () => {
+    const formData = new FormData();
+
+    files.forEach((fileObj, index) => {
+      formData.append(`file${index}`, fileObl.file);
+    })
+    // upload files to api
+    try {
+      const response = await fetch(`/api/...`, {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log(data.response);
+    }
+    catch (err) {
+      console.log("Upload failed:", err);
+    }
   }
 
   return (
@@ -156,7 +208,7 @@ function App() {
             </li>
           ))}
           </div>
-          <button>Upload</button>
+          <button onClick={() => uploadFiles()}>Upload</button>
           <button onClick={() => {setUploadingFiles(!uploadingFiles); setFiles([]);}}>Cancel</button>
         </div>
       : null}
@@ -169,7 +221,7 @@ function App() {
               Enter Prompt
           </button>
           <div className="buttonSubContainer">
-            <button>Organize Files</button>
+            <button onClick={() => organizeFiles()}>Organize Files</button>
             <button onClick={() => setUploadingFiles(!uploadingFiles)}>Upload Files</button>
           </div>
         </div>
@@ -189,7 +241,7 @@ function App() {
           </button>
 
           <div className="buttonSubContainer">
-            <button>Organize Files</button>
+            <button onClick={() => organizeFiles()}>Organize Files</button>
             <button onClick={() => setUploadingFiles(!uploadingFiles)}>Upload Files</button>
           </div>
         </div>
@@ -210,7 +262,7 @@ function App() {
               ))}
             </div>
 
-            <button>Upload</button>
+            <button onClick={() => uploadFiles()}>Upload</button>
             <button onClick={() => {setUploadingFiles(!uploadingFiles); setFiles([]);}}>Cancel</button>
           </div>
 
