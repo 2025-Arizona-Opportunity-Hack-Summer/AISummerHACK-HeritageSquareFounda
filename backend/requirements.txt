@@ -2,3 +2,14 @@
 fastapi
 uvicorn
 pydantic
+dotenv
+google-api-python-client
+google-auth-oauthlib
+google-genai
+pdfplumber
+docx
+python-docx
+pytesseract
+pillow
+tesseract
+langchain
