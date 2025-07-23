@@ -104,10 +104,10 @@ backend/
     - Link to your final demo video
     - Any other information you think is important
 
-
+## Contact
 - [Team Slack Channel](https://opportunity-hack.slack.com/archives/C09099PAHLK)
 
-    You'll use this repo as your resume in the future, so make it shine! 🌟
+<!---    You'll use this repo as your resume in the future, so make it shine! 🌟
 
     Examples of stellar readmes:
     - ✨ [2019 Team 3](https://github.com/2019-Arizona-Opportunity-Hack/Team-3)
@@ -116,4 +116,6 @@ backend/
     - ✨ [2020 Team 4](https://github.com/2020-opportunity-hack/Team-04)
     - ✨ [2020 Team 8](https://github.com/2020-opportunity-hack/Team-08)
     - ✨ [2020 Team 12](https://github.com/2020-opportunity-hack/Team-12)
-    
+
+
+    --->
