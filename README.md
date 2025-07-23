@@ -104,6 +104,9 @@ backend/
     - Link to your final demo video
     - Any other information you think is important
 
+
+- [Team Slack Channel](https://opportunity-hack.slack.com/archives/C09099PAHLK)
+
     You'll use this repo as your resume in the future, so make it shine! 🌟
 
     Examples of stellar readmes:
