@@ -104,8 +104,10 @@ backend/
     - Link to your final demo video
     - Any other information you think is important
 
+## Challenges We Faced
+
 ## Contact
-- [Team Slack Channel](https://opportunity-hack.slack.com/archives/C09099PAHLK)
+- [Team Slack Channel](https://opportunity-hack.slack.com/app_redirect?channel=aisummerhack)
 
 <!---    You'll use this repo as your resume in the future, so make it shine! 🌟
 
