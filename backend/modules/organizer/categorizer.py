@@ -10,7 +10,7 @@ def process_all_drive_files():
         "application/pdf",
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
     ] + image_mimes])
-    query = f"({mime_query}) and trashed=false and 'root' in parents"
+    query = f"({mime_query}) and trashed=false" # and 'root' in parents"
     results = drive_service.files().list(
         q=query,
         fields="files(id, name, mimeType)"
