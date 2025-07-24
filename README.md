@@ -10,13 +10,13 @@
     ## Creator
     @Vishal Budamala (on Slack)
 
-    # Team "AISummerHACK"
-    ## Team Members
-    -  Sangeetha Sasikumar (Github: Sangeetha-007)
-    - [Isaac Phiri](https://github.com/IsaacPhiri)
-    -  Amit Raj Reddy Dharam (https://github.com/Ames-Zero)
-    - Vishal Budamala (GitHub: vbudamal12)
-    - Raylene Faerber (Github: rfaerber1)
+## Team "AISummerHACK"
+## Team Members
+- [Sangeetha Sasikumar](https://github.com/Sangeetha-007)
+- [Isaac Phiri](https://github.com/IsaacPhiri)
+- [Amit Raj Reddy Dharam](https://github.com/Ames-Zero)
+- [Vishal Budamala](https://github.com/vbudamal12)
+- [Raylene Faerber](https://github.com/rfaerber1)
 
     ## Project Overview
     # Project description
