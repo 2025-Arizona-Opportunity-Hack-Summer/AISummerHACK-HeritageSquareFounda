@@ -4,10 +4,10 @@ from pydantic import BaseModel
 from modules.organizer.categorizer import process_all_drive_files
 from modules.organizer.upload_file import upload_file
 from modules.organizer.folder_utils import merge_and_cleanup_folders, get_existing_folders, remove_empty_folders
+from modules.organizer.drive_files import list_drive_files
 import logging
 import os
 import shutil
-import tempfile
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -22,6 +22,18 @@ class APIResponse(BaseModel):
 async def root():
     return APIResponse(status="ok", message="API is running")
 
+@router.get("/files", response_model=list)
+async def list_files():
+    try:
+        files = list_drive_files()
+        # Log total files found
+        logger.info(f"Total files found: {len(files)}")
+        # return APIResponse with number of files
+        return APIResponse(status="success", message=f"Found {len(files)} files")
+    except Exception as e:
+        logger.error(f"Error listing files: {str(e)}")
+        raise HTTPException(status_code=500, detail={"status": "error", "message": str(e)})
+
 @router.post("/categorize", response_model=APIResponse)
 async def run_categorizer():
     try:
@@ -31,7 +43,7 @@ async def run_categorizer():
         return APIResponse(status="success", message="Files categorized successfully")
     except Exception as e:
         logger.error(f"Categorization error: {str(e)}")
-        raise HTTPException(status_code=500, detail=APIResponse(status="error", message=str(e)))
+        raise HTTPException(status_code=500, detail={"status": "error", "message": str(e)})
 
 @router.post("/upload", response_model=APIResponse)
 async def run_upload(file: UploadFile = File(...)):
@@ -51,7 +63,7 @@ async def run_upload(file: UploadFile = File(...)):
         # Verify file exists
         if not os.path.exists(file_path):
             logger.error("Uploaded file could not be saved.")
-            raise HTTPException(status_code=400, detail=APIResponse(status="error", message="File could not be saved"))
+            raise HTTPException(status_code=500, detail={"status": "error", "message": str(e)})
 
         # Call upload_file
         upload_file(file_path)
@@ -62,7 +74,7 @@ async def run_upload(file: UploadFile = File(...)):
         return APIResponse(status="success", message=f"File {safe_filename} uploaded successfully")
     except Exception as e:
         logger.error(f"Upload error: {str(e)}")
-        raise HTTPException(status_code=500, detail=APIResponse(status="error", message=str(e)))
+        raise HTTPException(status_code=500, detail={"status": "error", "message": str(e)})
 
 @router.post("/cleanup", response_model=APIResponse)
 async def run_cleanup():
@@ -72,7 +84,7 @@ async def run_cleanup():
         return APIResponse(status="success", message="Empty folders removed successfully")
     except Exception as e:
         logger.error(f"Cleanup error: {str(e)}")
-        raise HTTPException(status_code=500, detail=APIResponse(status="error", message=str(e)))
+        raise HTTPException(status_code=500, detail={"status": "error", "message": str(e)})
 
 @router.post("/merge", response_model=APIResponse)
 async def run_merge():
@@ -83,4 +95,5 @@ async def run_merge():
         return APIResponse(status="success", message="Folders merged successfully")
     except Exception as e:
         logger.error(f"Merge error: {str(e)}")
-        raise HTTPException(status_code=500, detail=APIResponse(status="error", message=str(e)))
+        raise HTTPException(status_code=500, detail={"status": "error", "message": str(e)})
+    
