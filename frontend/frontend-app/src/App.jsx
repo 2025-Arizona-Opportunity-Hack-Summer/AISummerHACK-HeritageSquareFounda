@@ -13,6 +13,10 @@ function App() {
   const [discussion, setDiscussions] = useState([]);
   const discussionEndRef = useRef(null);
 
+  // variable for organizing files
+  const [organizingFiles, setOrganizingFiles] = useState(false);
+  const [toolTip, setToolTip] = useState(0);
+
   // variables for uploading files
   const [uploadingFiles, setUploadingFiles] = useState(false);
   const [files, setFiles] = useState([]);
@@ -61,7 +65,7 @@ function App() {
 
     // send query and get response back (can be changed to use POST method)
     try {
-      const response = await fetch(`/api/query?q=${encodeURIComponent(query)}`, {
+      const response = await fetch(`/api/`, {
         method: 'GET'
       });
       if (!response.ok) {
@@ -96,14 +100,16 @@ function App() {
   /*
     Function for organizing files
   */
-  const organizeFiles = async () => {
-    setMsg('');
+  const categorizeFiles = async () => {
+    console.log("Categorize clicked");
+    setMsg('Categorizing...');
     // trigger file organization
     try {
       const response = await fetch(`/api/categorize`, {
         method: 'POST'
       });
       if (!response.ok) {
+          setMsg('Failed to categorize files.');
           throw new Error(`HTTP error! status: ${response.status}`);
       }
 
@@ -112,8 +118,52 @@ function App() {
       setMsg('Completed organizing files.');
     }
     catch (err) {
-      console.log("Organizing failed:", err);
-      setMsg('Failed to organize files.');
+      console.log("Categorizing failed:", err);
+      setMsg('Failed to categorize files.');
+    }
+  }
+
+  const cleanupFiles = async () => {
+    setMsg('Cleaning up...');
+    // trigger file organization
+    try {
+      const response = await fetch(`/api/cleanuo`, {
+        method: 'POST'
+      });
+      if (!response.ok) {
+          setMsg('Failed to cleanup files.');
+          throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log(data.response);
+      setMsg('Completed cleaning up files.');
+    }
+    catch (err) {
+      console.log("Clearnup failed:", err);
+      setMsg('Failed to cleanup files.');
+    }
+  }
+
+  const mergeFiles = async () => {
+    setMsg('Merging...');
+    // trigger file organization
+    try {
+      const response = await fetch(`/api/merge`, {
+        method: 'POST'
+      });
+      if (!response.ok) {
+          setMsg('Failed to merge files.');
+          throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log(data.response);
+      setMsg('Completed merging files.');
+    }
+    catch (err) {
+      console.log("Merging failed:", err);
+      setMsg('Failed to merge files.');
     }
   }
 
@@ -153,6 +203,7 @@ function App() {
   }
 
   const uploadFiles = async () => {
+    setMsg('Uploading...');
     const formData = new FormData();
 
     files.forEach((fileObj, index) => {
@@ -209,6 +260,41 @@ function App() {
     /* for desktop */
     <div id="desktop">
     <div className="bottomBar">
+      {organizingFiles?
+        <div className="fileOrganizeContainer">
+          <li>
+            <button onClick={() => categorizeFiles()}>Categorize</button>
+            <p 
+            onMouseEnter={() => setToolTip(1)}
+            onMouseLeave={() => setToolTip(0)}
+            >?</p>
+            {toolTip == 1? 
+            <p className="toolTip">explanation...</p>
+            : null}
+          </li>
+          <li>
+            <button onClick={() => cleanupFiles()}>Cleanup</button>
+            <p 
+            onMouseEnter={() => setToolTip(2)}
+            onMouseLeave={() => setToolTip(0)}
+            >?</p>
+            {toolTip == 2? 
+            <p className="toolTip">explanation...</p>
+            : null}
+          </li>
+          <li>
+            <button onClick={() => mergeFiles()}>Merge</button>
+            <p 
+            onMouseEnter={() => setToolTip(3)}
+            onMouseLeave={() => setToolTip(0)}
+            >?</p>
+            {toolTip == 3? 
+            <p className="toolTip">explanation...</p>
+            : null}
+          </li>
+        </div>
+      : null}
+
       {uploadingFiles?
         <div className="fileUploadContainer">
           {renderFileInputs(inputIdCounter.current)}
@@ -238,17 +324,25 @@ function App() {
               Enter Prompt
           </button>
           <div className="buttonSubContainer">
-            <button onClick={() => organizeFiles()}>Organize Files</button>
-            <button onClick={() => {setUploadingFiles(!uploadingFiles); setMsg('')}}>Upload Files</button>
+            <button 
+            style={organizingFiles? {backgroundColor: '#F3F5F4'} : {background: 'white'}}
+            onClick={() => {setOrganizingFiles(!organizingFiles); setMsg(''); setUploadingFiles(false)}}
+            >Organize Files</button>
+
+            <button 
+            style={uploadingFiles? {backgroundColor: '#F3F5F4'} : {background: 'white'}}
+            onClick={() => {setUploadingFiles(!uploadingFiles); setMsg(''); setOrganizingFiles(false);}}
+            >Upload Files</button>
           </div>
         </div>
       </div>
     </div>
     </div>
     : 
+    /* for smaller screen */
     <div id="mobile">
     <div className="bottomBar">
-      {!uploadingFiles? 
+      {!uploadingFiles && !organizingFiles? 
       <div id={"constantVisibility"}>
         <textarea ref={textAreaRef} type="text" value={query} placeholder="Prompt" onChange={(e) => setQuery(e.target.value)}/>
 
@@ -262,8 +356,15 @@ function App() {
           : null}
 
           <div className="buttonSubContainer">
-            <button onClick={() => organizeFiles()}>Organize Files</button>
-            <button onClick={() => {setUploadingFiles(!uploadingFiles); setMsg('')}}>Upload Files</button>
+            <button 
+            style={organizingFiles? {backgroundColor: '#F3F5F4'} : {background: 'white'}}
+            onClick={() => {setOrganizingFiles(!organizingFiles); setMsg(''); setUploadingFiles(false)}}
+            >Organize Files</button>
+
+            <button 
+            style={uploadingFiles? {backgroundColor: '#F3F5F4'} : {background: 'white'}}
+            onClick={() => {setUploadingFiles(!uploadingFiles); setMsg(''); setOrganizingFiles(false);}}
+            >Upload Files</button>
           </div>
 
         </div>
@@ -272,6 +373,40 @@ function App() {
       <div id={"constantVisibility"}>
         <div className="buttonContainer">
 
+            {organizingFiles?
+            <div className="fileOrganizeContainer">
+              <li>
+                <button onClick={() => categorizeFiles()}>Categorize</button>
+                <p 
+                onMouseEnter={() => setToolTip(1)}
+                onMouseLeave={() => setToolTip(0)}
+                >?</p>
+                {toolTip == 1? 
+                <p className="toolTip">explanation...</p>
+                : null}
+              </li>
+              <li>
+                <button onClick={() => cleanupFiles()}>Cleanup</button>
+                <p 
+                onMouseEnter={() => setToolTip(2)}
+                onMouseLeave={() => setToolTip(0)}
+                >?</p>
+                {toolTip == 2? 
+                <p className="toolTip">explanation...</p>
+                : null}
+              </li>
+              <li>
+                <button onClick={() => mergeFiles()}>Merge</button>
+                <p 
+                onMouseEnter={() => setToolTip(3)}
+                onMouseLeave={() => setToolTip(0)}
+                >?</p>
+                {toolTip == 3? 
+                <p className="toolTip">explanation...</p>
+                : null}
+              </li>
+            </div>
+          : 
           <div className="fileUploadContainer">
             {renderFileInputs(inputIdCounter.current)}
           
@@ -287,10 +422,18 @@ function App() {
             <button onClick={() => uploadFiles()}>Upload</button>
             <button onClick={() => {setUploadingFiles(!uploadingFiles); setFiles([]); setMsg('')}}>Cancel</button>
           </div>
+          }
 
           <div className="buttonSubContainer">
-            <button onClick={() => organizeFiles()}>Organize Files</button>
-            <button onClick={() => {setUploadingFiles(!uploadingFiles); setMsg('')}}>Upload Files</button>
+            <button 
+            style={organizingFiles? {backgroundColor: '#F3F5F4'} : {background: 'white'}}
+            onClick={() => {setOrganizingFiles(!organizingFiles); setMsg(''); setUploadingFiles(false)}}
+            >Organize Files</button>
+
+            <button 
+            style={uploadingFiles? {backgroundColor: '#F3F5F4'} : {background: 'white'}}
+            onClick={() => {setUploadingFiles(!uploadingFiles); setMsg(''); setOrganizingFiles(false);}}
+            >Upload Files</button>
           </div>
 
         </div>
