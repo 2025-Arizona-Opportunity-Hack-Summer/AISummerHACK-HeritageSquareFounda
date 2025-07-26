@@ -72,9 +72,7 @@ function App() {
           throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      
-      setDiscussions([...ogDiscussion, {id: discussion.length, query: query, response: data.response}])
-      console.log(data.response);
+      setDiscussions([...ogDiscussion, {id: discussion.length, query: query, response: data.message}])
     }
     catch {
       setDiscussions([...ogDiscussion, {id: discussion.length, query: query, response: "An error has occurred"}]);
@@ -98,6 +96,37 @@ function App() {
 
 
   /*
+    Function for displaying file information in discussion thread
+  */
+  const getFileInfo = async () => {
+    setMsg('')
+    // move query into discussion
+    const query = "Display file information"
+    const ogDiscussion = discussion;
+    setDiscussions([...discussion, {id: discussion.length, query: query, response: "generating..."}])
+    setQuery("");
+
+    // send query and get response back (can be changed to use POST method)
+    try {
+      const response = await fetch(`/api/files`, {
+        method: 'GET'
+      });
+      if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log(data[1][1]);
+      
+      setDiscussions([...ogDiscussion, {id: discussion.length, query: query, response: data[1][1]}])
+      console.log(data.response);
+    }
+    catch (err){
+      setDiscussions([...ogDiscussion, {id: discussion.length, query: query, response: "An error has occurred"}]);
+      console.log("Failed to get file info", err);
+    }
+  }
+
+  /*
     Function for organizing files
   */
   const categorizeFiles = async () => {
@@ -114,8 +143,13 @@ function App() {
       }
 
       const data = await response.json();
-      console.log(data.response);
-      setMsg('Completed organizing files.');
+      console.log(data);
+      if (data.status === 'success') {
+        setMsg(data.message);
+      }
+      else {
+        throw new Error(data.message);
+      }
     }
     catch (err) {
       console.log("Categorizing failed:", err);
@@ -127,7 +161,7 @@ function App() {
     setMsg('Cleaning up...');
     // trigger file organization
     try {
-      const response = await fetch(`/api/cleanuo`, {
+      const response = await fetch(`/api/cleanup`, {
         method: 'POST'
       });
       if (!response.ok) {
@@ -136,8 +170,13 @@ function App() {
       }
 
       const data = await response.json();
-      console.log(data.response);
-      setMsg('Completed cleaning up files.');
+      console.log(data);
+      if (data.status === 'success') {
+        setMsg(data.message);
+      }
+      else {
+        throw new Error(data.message);
+      }
     }
     catch (err) {
       console.log("Clearnup failed:", err);
@@ -158,8 +197,13 @@ function App() {
       }
 
       const data = await response.json();
-      console.log(data.response);
-      setMsg('Completed merging files.');
+      console.log(data);
+      if (data.status === 'success') {
+        setMsg(data.message);
+      }
+      else {
+        throw new Error(data.message);
+      }
     }
     catch (err) {
       console.log("Merging failed:", err);
@@ -325,6 +369,9 @@ function App() {
           </button>
           <div className="buttonSubContainer">
             <button 
+            onClick={() => {setMsg(''); getFileInfo();}}
+            >View File Information</button>
+            <button 
             style={organizingFiles? {backgroundColor: '#F3F5F4'} : {background: 'white'}}
             onClick={() => {setOrganizingFiles(!organizingFiles); setMsg(''); setUploadingFiles(false)}}
             >Organize Files</button>
@@ -351,11 +398,11 @@ function App() {
               Enter Prompt
           </button>
 
-          {msg != ''?
-          <p className="msg">{msg}</p>
-          : null}
-
           <div className="buttonSubContainer">
+            <button 
+            onClick={() => {setMsg(''); getFileInfo();}}
+            >View File Information</button>
+
             <button 
             style={organizingFiles? {backgroundColor: '#F3F5F4'} : {background: 'white'}}
             onClick={() => {setOrganizingFiles(!organizingFiles); setMsg(''); setUploadingFiles(false)}}
@@ -371,6 +418,10 @@ function App() {
       </div>
       : 
       <div id={"constantVisibility"}>
+        {msg != ''?
+          <p className="msg">{msg}</p>
+          : null}
+
         <div className="buttonContainer">
 
             {organizingFiles?
@@ -426,8 +477,12 @@ function App() {
 
           <div className="buttonSubContainer">
             <button 
+            onClick={() => {setMsg(''); getFileInfo(); setOrganizingFiles(false); setUploadingFiles(false);}}
+            >View File Information</button>
+
+            <button 
             style={organizingFiles? {backgroundColor: '#F3F5F4'} : {background: 'white'}}
-            onClick={() => {setOrganizingFiles(!organizingFiles); setMsg(''); setUploadingFiles(false)}}
+            onClick={() => {setOrganizingFiles(!organizingFiles); setMsg(''); setUploadingFiles(false);}}
             >Organize Files</button>
 
             <button 
