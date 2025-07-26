@@ -251,7 +251,7 @@ function App() {
     const formData = new FormData();
 
     files.forEach((fileObj, index) => {
-      formData.append(`file${index}`, fileObj.file);
+      formData.append('file', fileObj.file);
     })
 
     console.log("data being sent:");

@@ -272,6 +272,7 @@ input[type='file'] {
 
 #desktop .msg {
   width: 100%;
+  padding: 2px;
   
   border-top: 1px solid gray;
   border-bottom: 1px solid gray;
