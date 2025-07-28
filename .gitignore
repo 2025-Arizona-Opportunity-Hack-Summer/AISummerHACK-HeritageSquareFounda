@@ -1,0 +1,9 @@
+./backend/.env
+./backend/modules/__pycache__/
+./backend/ai_agent/__pycache__/
+./backend/vector_store/__pycache__/
+./backend/tests/chroma_db/
+./backend/tests/testPdfs/
+./backend/tests/tester.ipynb
+
+
