@@ -5,7 +5,7 @@
     - Nonprofit: [Heritage Square Foundation](https://ohack.dev/nonprofit/QFPGmii2GmDPYrv5tjHA)
     - [Hackathon Details](https://www.ohack.dev/hack/2025_summer)
     - [Team Slack Channel](https://opportunity-hack.slack.com/app_redirect?channel=aisummerhack)
-### NonProfit Organization We Developed For: [Heritage Square Foundation](https://thesquarephx.org/)
+# NonProfit Organization We Developed For: [Heritage Square Foundation](https://thesquarephx.org/)
 
 <!---     ## Creator
     @Vishal Budamala (on Slack)
@@ -49,7 +49,7 @@ File Classifier / Search / Reorganizer
 UI Chat Interface
 ```
 
-DevPost: https://devpost.com/software/heritage-square-foundation
+## DevPost: https://devpost.com/software/heritage-square-foundation
 
 ### File Structure
 
