@@ -5,11 +5,11 @@
     - Nonprofit: [Heritage Square Foundation](https://ohack.dev/nonprofit/QFPGmii2GmDPYrv5tjHA)
     - [Hackathon Details](https://www.ohack.dev/hack/2025_summer)
     - [Team Slack Channel](https://opportunity-hack.slack.com/app_redirect?channel=aisummerhack)
+### NonProfit Organization We Developed For: [Heritage Square Foundation](https://thesquarephx.org/)
 
-
-    ## Creator
+<!---     ## Creator
     @Vishal Budamala (on Slack)
-
+--->
 ## Team "AISummerHACK"
 ## Team Members
 - [Sangeetha Sasikumar](https://github.com/Sangeetha-007)
