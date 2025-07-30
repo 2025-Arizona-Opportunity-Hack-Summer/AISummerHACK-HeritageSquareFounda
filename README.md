@@ -115,6 +115,7 @@ backend/
     - Any other information you think is important
 
 ## Challenges We Faced
+A challenge we ran into is finding the time to meet because the whole team is split up into 4 different timezones. Another challenge we faced is learning how to use RAG/LangChain.
 
 ## Contact
 - [Team Slack Channel](https://opportunity-hack.slack.com/app_redirect?channel=aisummerhack)
