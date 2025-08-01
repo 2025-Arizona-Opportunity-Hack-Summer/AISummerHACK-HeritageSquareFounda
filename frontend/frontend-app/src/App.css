@@ -152,6 +152,7 @@ input[type='file'] {
   min-height: 50px;
   max-height: 300px;
   overflow: auto;
+  margin-top:5px;
 }
 .fileUploadContainer li{
   display: flex;

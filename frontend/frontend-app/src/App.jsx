@@ -127,7 +127,7 @@ function App() {
   }
 
   /*
-    Function for organizing files
+    Functions for organizing files
   */
   const categorizeFiles = async () => {
     console.log("Categorize clicked");
@@ -215,6 +215,7 @@ function App() {
     Functions for uploading files
   */
 
+  // user uploads file
   const handleFileChange = (event, inputId) => {
     const file = event.target.files[0];
 
@@ -225,6 +226,7 @@ function App() {
     }
   };
 
+  // display uploaded files
   const renderFileInputs = (nextInputId) => {
     return (
       <>
@@ -241,12 +243,19 @@ function App() {
     )
   }
 
+  // remove user uploaded file
   const removeFile = (fileIndex) => {
     setFiles((prev) => prev.filter((fileObj) => fileObj.id !== fileIndex));
     delete inputRefs.current[fileIndex];
   }
 
+  // upload files to backend
   const uploadFiles = async () => {
+    if (files.length == 0) {
+      setMsg('No files selected to upload');
+      return;
+    }
+
     setMsg('Uploading...');
     const formData = new FormData();
 
@@ -254,10 +263,10 @@ function App() {
       formData.append('file', fileObj.file);
     })
 
-    console.log("data being sent:");
-    for (let pair of formData.entries()) {
-      console.log(pair[0]+ ':', pair[1]);
-    }
+    //console.log("data being sent:");
+    //for (let pair of formData.entries()) {
+    //  console.log(pair[0]+ ':', pair[1]);
+    //}
 
     // upload files to api
     try {
@@ -313,7 +322,7 @@ function App() {
             onMouseLeave={() => setToolTip(0)}
             >?</p>
             {toolTip == 1? 
-            <p className="toolTip">explanation...</p>
+            <p className="toolTip">Categorize files</p>
             : null}
           </li>
           <li>
@@ -323,7 +332,7 @@ function App() {
             onMouseLeave={() => setToolTip(0)}
             >?</p>
             {toolTip == 2? 
-            <p className="toolTip">explanation...</p>
+            <p className="toolTip">Remove empty folders</p>
             : null}
           </li>
           <li>
@@ -333,7 +342,7 @@ function App() {
             onMouseLeave={() => setToolTip(0)}
             >?</p>
             {toolTip == 3? 
-            <p className="toolTip">explanation...</p>
+            <p className="toolTip">Merge duplicate folders</p>
             : null}
           </li>
         </div>
@@ -433,7 +442,7 @@ function App() {
                 onMouseLeave={() => setToolTip(0)}
                 >?</p>
                 {toolTip == 1? 
-                <p className="toolTip">explanation...</p>
+                <p className="toolTip">Categorize files</p>
                 : null}
               </li>
               <li>
@@ -443,7 +452,7 @@ function App() {
                 onMouseLeave={() => setToolTip(0)}
                 >?</p>
                 {toolTip == 2? 
-                <p className="toolTip">explanation...</p>
+                <p className="toolTip">Remove empty folders</p>
                 : null}
               </li>
               <li>
@@ -453,7 +462,7 @@ function App() {
                 onMouseLeave={() => setToolTip(0)}
                 >?</p>
                 {toolTip == 3? 
-                <p className="toolTip">explanation...</p>
+                <p className="toolTip">Merge duplicate folders</p>
                 : null}
               </li>
             </div>
