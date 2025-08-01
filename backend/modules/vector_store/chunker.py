@@ -18,3 +18,6 @@ class Chunker:
             chunks = self.chunk_text(doc)
             all_chunks.extend(chunks)
         return all_chunks
+    
+def chunk_text(text: str) -> List[str]:
+    return Chunker().chunk_text(text)

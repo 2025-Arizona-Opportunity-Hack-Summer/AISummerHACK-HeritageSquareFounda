@@ -1,6 +1,7 @@
 import os
 from typing import List, Tuple
-from langchain.vectorstores import Chroma
+# from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_community.vectorstores import Chroma
 from langchain.embeddings.base import Embeddings
 from langchain.docstore.document import Document
 from dotenv import load_dotenv
@@ -10,7 +11,7 @@ load_dotenv()
 
 class ChromaVectorStore:
     def __init__(self, embedding_model: Embeddings, persist_directory: str = "chroma_db"):
-        self.embedding_model = embedding_model
+        self.embedding_model = embedding_model.embedding_model
         self.persist_directory = persist_directory
         self.vectorstore = None
 
@@ -37,3 +38,8 @@ class ChromaVectorStore:
             self.load_index()
         results = self.vectorstore.similarity_search(query, k=k)
         return [(doc.page_content, doc.metadata) for doc in results]
+    
+    def as_retriever(self, **kwargs):
+        if self.vectorstore is None:
+            self.load_index()
+        return self.vectorstore.as_retriever(**kwargs)
