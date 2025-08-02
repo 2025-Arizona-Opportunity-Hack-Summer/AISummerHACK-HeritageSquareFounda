@@ -1,49 +1,75 @@
-# 2025_summer Hackathon Project
-## NonProfit Organization We Developed For: [Heritage Square Foundation](https://thesquarephx.org/)
-## Team "AISummerHACK"
-## Team Members
+# 2025 Summer Hackathon Project
+
+**Nonprofit**: [Heritage Square Foundation](https://thesquarephx.org/)  
+**Team**: AISummerHACK  
+
+## 👥 Team Members
 - [Sangeetha Sasikumar](https://github.com/Sangeetha-007)
 - [Isaac Phiri](https://github.com/IsaacPhiri)
 - [Amit Raj Reddy Dharam](https://github.com/Ames-Zero)
 - [Vishal Budamala](https://github.com/vbudamal12)
-- [Raylene Faerber](https://github.com/rfaerber1)
+- [Raylene Faerber](https://github.com/rfaerber1)  
 
-    ## Project Overview
-    # Project description
-    1. Problem: Heritage Square's unorganized Google Drive hinders efficient document retrieval for marketing, operations, and grants, while manual AI prompting is time-consuming and potentially inaccurate.
-    2. Key Features: Implement AI-driven document categorization, suggest reorganization strategies, automate file movement, and integrate with existing AI tools (Gemini) for enhanced prompting capabilities.
-    
-    ## Goal
-    Develop an AI agent with access to Heritage Square's Google Drive to assist in document organization, tagging, and retrieval, as well as provide accurate responses to staff queries.
+---
 
-    ## Tech Stack
-    - Frontend: react.js + vite
-    - Backend: Python + FastAPI 
-    - Database: Google drive
-    - APIs: Google Drive api + genai
-    <!-- Add/modify as needed -->
+## 🧠 Project Overview
 
-    ### ⚙️ High-Level Architecture
+### 📌 Problem
+Heritage Square’s Google Drive was heavily cluttered and unstructured, making it difficult for team members to locate key files related to events, marketing, operations, and donor records. Staff were also relying on manual queries using Gemini AI, which introduced inefficiencies and inconsistent results.
+
+### ✅ Solution
+We developed an AI-powered Google Drive assistant to:
+
+- ✅ Automatically categorize and organize files into meaningful folders  
+- ✅ Use Google’s Gemini API to understand content and respond to natural language prompts  
+- ✅ Provide a user-friendly React chat interface for interacting with the assistant  
+- ✅ Enable scalable document search using embeddings and vector databases  
+- ✅ Offer cleanup utilities like removing empty folders and merging duplicates  
+
+---
+
+## 🎯 Project Goal
+
+Empower Heritage Square’s team with a smart, integrated assistant that:
+
+- Organizes Drive content using classification and dynamic folder creation  
+- Enhances productivity through natural language document search  
+- Supports scalable document management and knowledge access  
+- Saves time and reduces reliance on manual processes  
+
+---
+
+## 🛠 Tech Stack
+
+| Layer               | Technologies Used                                                                 |
+|---------------------|-----------------------------------------------------------------------------------|
+| **Frontend**        | React.js + Vite                                                                  |
+| **Backend**         | FastAPI (Python), Uvicorn                                                        |
+| **AI Integration**  | Gemini Pro via `google.generativeai` + Gemini Vision                             |
+| **Embedding & RAG** | LangChain, FAISS, PDF/DOCX text extraction                                       |
+| **File Categorization** | Custom LLM prompts, dynamic folder matching                                |
+| **APIs**            | Google Drive API                                                                 |
+| **Deployment**      | *(Pending full functionality due to service account limitations)*               |
+
+---
+
+## 🏗 High-Level Architecture
 
 ```bash
-Google Drive API
-        ↓
-Document Extractor (PDF, DOCX, etc.)
-        ↓
-Text Chunker + Indexing (LangChain + FAISS)
-        ↓
-AI Model (Gemini) → interprets queries
-        ↓
-File Classifier / Search / Reorganizer
-        ↓
-UI Chat Interface
+flowchart TD
+  A[Google Drive API] --> B[Document Extractor]
+  B --> C[Text Chunker + Indexing]
+  C --> D[Embedding Store (FAISS)]
+  D --> E[Gemini Pro Prompt Handler]
+  E --> F[AI Agent + RAG Retrieval]
+  F --> G[React UI Chat Interface]
+  F --> H[Organizer Module (Folder Mgmt, Categorization)]
 ```
 
-## DevPost: https://devpost.com/software/heritage-square-foundation
 
-## How to Run Our Code:
+---
 
-### File Structure
+📁 File Structure
 
 ```bash
 backend/
@@ -78,55 +104,146 @@ backend/
 ├── tests/                # Unit and integration tests
 ```
 
-    ## Getting Started
-    Instructions on how to set up and run your project locally.
 
-    ```bash
-    # Example commands
-    git clone [your-repo-link]
-    cd [your-repo-name]
-    npm install
-    npm start
-    ```
+---
+
+💻 Running the Project Locally
+
+✅ Prerequisites
+
+Python 3.10+
+
+Node.js (v18+)
+
+credentials.json for OAuth Drive access (manual only)
+
+Enable Drive API and Gemini API on GCP
 
 
-    ## Your next steps
-    1. ✅ Add everyone on your team to your GitHub repo like [this video posted in our Slack channel](https://opportunity-hack.slack.com/archives/C1Q6YHXQU/p1605657678139600)
-    2. ✅ Create your DevPost project [like this video](https://youtu.be/vCa7QFFthfU?si=bzMQ91d8j3ZkOD03)
-    3. ✅ Use the [this DevPost]() to submit your project
-    4. ✅ Your DevPost final submission demo video should be 4 minutes or less
-    5. ✅ Review the judging criteria on DevPost
+🧪 Backend
 
-    # What should your final Readme look like?
-    Your readme should be a one-stop-shop for the judges to understand your project. It should include:
-    - Team name
-    - Team members
-    - Slack channel
-    - Problem statement
-    - Tech stack
-    - Link to your DevPost project
-    - Link to your final demo video
-    - Any other information you think is important
+git clone https://github.com/2025-Arizona-Opportunity-Hack-Summer/AISummerHACK-HeritageSquareFounda
+cd backend
+pip install -r requirements.txt
+uvicorn main:app --reload
 
-## Challenges We Faced
-A challenge we ran into is finding the time to meet because the whole team is split up into 4 different timezones. Another challenge we faced is learning how to use RAG/LangChain.
+💻 Frontend
+
+cd frontend/frontend-app
+npm install
+npm run dev
+
+
+---
+
+🚀 Deployment Notes
+
+The organizer module (folder cleanup, categorization) works perfectly in development using a credentials.json file for OAuth authentication.
+
+In production, Google service accounts are preferred, however, they don’t have full access rights to user Drive contents unless each folder is manually shared.
+
+For now, only the prompt feature works in production using service accounts.
+
+Categorization and cleanup require OAuth flow for full access.
+
+This limitation blocks full deployment but still allows demoing the AI agent’s core prompt capabilities.
+
+
+
+---
+
+⚠ Known Challenges & Fixes
+
+✅ Major Wins:
+
+Cleaned and standardized API JSON responses
+
+Successfully authenticated Drive API for downloads and file movements
+
+Integrated Gemini Pro (text + image) for intelligent classification
+
+
+🚧 Challenges:
+
+Service accounts lack write permissions to shared drives unless folders are manually shared
+
+Some error messages were returned as AI responses — this has been flagged
+
+Categorization accuracy needs improvement (especially on mixed content files)
+
+
+
+---
+
+🎥 Demo Video
+
+Coming soon
+
+
+---
+
+📑 Documentation
+
+✅ Main README.md (you’re here)
+
+✅ Module-specific READMEs in /modules
+
+✅ .env.template provided for backend setup
+
+✅ API endpoints and file structure documented
+
+
+
+---
+
+📌 DevPost Submission
+
+🔗 DevPost Project Link: https://devpost.com/software/heritage-square-foundation
+
+---
+
+🧠 Team Challenges
+
+Coordinating across 4 time zones
+
+Limited real-time availability for meetings
+
+Adapting to LangChain, Google Drive APIs, and Gemini integration
+
+Managing merge conflicts and last-minute deployment issues
+
+Power outages and connectivity problems during final stages
+
+
+
+---
+
+🌟 Inspiration & Team Culture
+
+Despite technical hurdles, power outages, and time constraints, the team remained committed, collaborative, and encouraging.
+We embraced the value of:
+
+> “Take your time, but remember the timeline.”
+
+
+
+We didn’t just build an app — we built a tool that empowers the people who serve their community.
+
+
+---
+
+🤝 Contact
+
+📫 - [Team Slack Channel](https://opportunity-hack.slack.com/app_redirect?channel=aisummerhack)
+
+🛠 GitHub: AISummerHACK-HeritageSquareFounda
+
+📌 Nonprofit: Heritage Square Foundation
+
 ## Quick Links
 - Nonprofit: [Heritage Square Foundation](https://ohack.dev/nonprofit/QFPGmii2GmDPYrv5tjHA)
 - [Hackathon Details](https://www.ohack.dev/hack/2025_summer)
-- [Team Slack Channel](https://opportunity-hack.slack.com/app_redirect?channel=aisummerhack)
-
-## Contact
-- [Team Slack Channel](https://opportunity-hack.slack.com/app_redirect?channel=aisummerhack)
-
-<!---    You'll use this repo as your resume in the future, so make it shine! 🌟
-
-    Examples of stellar readmes:
-    - ✨ [2019 Team 3](https://github.com/2019-Arizona-Opportunity-Hack/Team-3)
-    - ✨ [2019 Team 6](https://github.com/2019-Arizona-Opportunity-Hack/Team-6)
-    - ✨ [2020 Team 2](https://github.com/2020-opportunity-hack/Team-02)
-    - ✨ [2020 Team 4](https://github.com/2020-opportunity-hack/Team-04)
-    - ✨ [2020 Team 8](https://github.com/2020-opportunity-hack/Team-08)
-    - ✨ [2020 Team 12](https://github.com/2020-opportunity-hack/Team-12)
 
 
-    --->
+
+
