@@ -1,15 +1,5 @@
-
-    # 2025_summer Hackathon Project
-
-    ## Quick Links
-    - Nonprofit: [Heritage Square Foundation](https://ohack.dev/nonprofit/QFPGmii2GmDPYrv5tjHA)
-    - [Hackathon Details](https://www.ohack.dev/hack/2025_summer)
-    - [Team Slack Channel](https://opportunity-hack.slack.com/app_redirect?channel=aisummerhack)
-# NonProfit Organization We Developed For: [Heritage Square Foundation](https://thesquarephx.org/)
-
-<!---     ## Creator
-    @Vishal Budamala (on Slack)
---->
+# 2025_summer Hackathon Project
+## NonProfit Organization We Developed For: [Heritage Square Foundation](https://thesquarephx.org/)
 ## Team "AISummerHACK"
 ## Team Members
 - [Sangeetha Sasikumar](https://github.com/Sangeetha-007)
@@ -21,16 +11,16 @@
     ## Project Overview
     # Project description
     1. Problem: Heritage Square's unorganized Google Drive hinders efficient document retrieval for marketing, operations, and grants, while manual AI prompting is time-consuming and potentially inaccurate.
-    2. Key Features: Implement AI-driven document categorization, suggest reorganization strategies, automate file movement, and integrate with existing AI tools (e.g., ChatGPT or Gemini) for enhanced prompting capabilities.
+    2. Key Features: Implement AI-driven document categorization, suggest reorganization strategies, automate file movement, and integrate with existing AI tools (Gemini) for enhanced prompting capabilities.
     
     ## Goal
     Develop an AI agent with access to Heritage Square's Google Drive to assist in document organization, tagging, and retrieval, as well as provide accurate responses to staff queries.
 
     ## Tech Stack
-    - Frontend: 
-    - Backend: 
-    - Database: 
-    - APIs: 
+    - Frontend: react.js + vite
+    - Backend: Python + FastAPI 
+    - Database: Google drive
+    - APIs: Google Drive api + genai
     <!-- Add/modify as needed -->
 
     ### ⚙️ High-Level Architecture
@@ -120,6 +110,10 @@ backend/
 
 ## Challenges We Faced
 A challenge we ran into is finding the time to meet because the whole team is split up into 4 different timezones. Another challenge we faced is learning how to use RAG/LangChain.
+## Quick Links
+- Nonprofit: [Heritage Square Foundation](https://ohack.dev/nonprofit/QFPGmii2GmDPYrv5tjHA)
+- [Hackathon Details](https://www.ohack.dev/hack/2025_summer)
+- [Team Slack Channel](https://opportunity-hack.slack.com/app_redirect?channel=aisummerhack)
 
 ## Contact
 - [Team Slack Channel](https://opportunity-hack.slack.com/app_redirect?channel=aisummerhack)
