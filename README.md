@@ -51,6 +51,8 @@ UI Chat Interface
 
 ## DevPost: https://devpost.com/software/heritage-square-foundation
 
+## How to Run Our Code:
+
 ### File Structure
 
 ```bash
@@ -61,6 +63,7 @@ backend/
 │
 ├── config/               # Configuration files (settings, credentials)
 │
+├── tests/ 
 ├── api/                  # API route handlers for organizing and querying
 │
 ├── modules/              # Core logic modules for organization and AI agent
@@ -81,6 +84,7 @@ backend/
 │
 ├── shared/               # Common utilities, schemas, prompts
 │
+├── frontend/frontend-app
 ├── tests/                # Unit and integration tests
 ```
 
