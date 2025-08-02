@@ -64,9 +64,14 @@ function App() {
     setQuery("");
 
     // send query and get response back (can be changed to use POST method)
+    //ADDING THE QUERY API HERE...need to test this soon.
     try {
-      const response = await fetch(`/api/`, {
-        method: 'GET'
+      const response = await fetch(`/api/query`, {
+        method: 'POST',//changing the method from 'GET' to 'POST' to allow for larger queries and memory.
+        headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ question: query }) 
       });
       if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

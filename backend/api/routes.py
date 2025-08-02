@@ -5,6 +5,7 @@ from modules.organizer.categorizer import process_all_drive_files
 from modules.organizer.upload_file import upload_file
 from modules.organizer.folder_utils import merge_and_cleanup_folders, get_existing_folders, remove_empty_folders
 from modules.organizer.drive_files import list_drive_files
+from modules.ai_agent.agentv2 import RAGAgent
 import logging
 import os
 import shutil
@@ -14,13 +15,39 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
+agent = RAGAgent()
+
+
 class APIResponse(BaseModel):
     status: str
     message: str
 
+class APIRequest(BaseModel):
+    question: str
+
 @router.get("/", response_model=APIResponse)
 async def root():
     return APIResponse(status="ok", message="API is running")
+
+@router.post("/query", response_model=APIResponse)
+async def rag_query(request: APIRequest):
+    try:
+        agent = RAGAgent()
+        pdf_dir = "tests/testPdfs/"  # or wherever your documents live
+        for root, _, files in os.walk(pdf_dir):
+            for file in files:
+                if file.endswith(".pdf"):
+                    file_path = os.path.join(root, file)
+                    agent.process_documents(file_path)
+        result = await agent.answer_question(request.question)
+        return APIResponse(
+            status="success",
+            message=result["answer"]
+        )
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail={"status": "error", "message": f"RAG query failed: {e}"})
 
 @router.get("/files", response_model=list)
 async def list_files():
@@ -96,4 +123,6 @@ async def run_merge():
     except Exception as e:
         logger.error(f"Merge error: {str(e)}")
         raise HTTPException(status_code=500, detail={"status": "error", "message": str(e)})
+
+
     

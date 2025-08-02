@@ -7,12 +7,12 @@ export default defineConfig({
 
   server: {
     // frontend
-    port: 3000,
+    port: 8000,
 
     // backend server
     proxy: {
       '/api': {
-        target: 'https://google-drive-organizer.onrender.com',
+        target: 'http://localhost:8000', // Backend server URL
         changeOrigin: true,
       }
     },

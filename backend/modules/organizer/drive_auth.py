@@ -10,9 +10,9 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 
 SCOPES = ["https://www.googleapis.com/auth/drive"]
 ENV = os.getenv("ENV", "development")  # Set to "production" in prod
-SERVICE_ACCOUNT_KEY = os.getenv("GOOGLE_SERVICE_ACCOUNT_KEY")  # JSON key content for production
-SERVICE_ACCOUNT_FILE = os.getenv("GOOGLE_SERVICE_ACCOUNT_KEY_PATH", "service-account-key.json")
-CREDENTIALS_FILE = "modules/organizer/credentials.json"
+SERVICE_ACCOUNT_KEY = os.getenv("GOOGLE_SERVICE_ACCOUNT_KEY",'service_account.json' )  # JSON key content for production
+SERVICE_ACCOUNT_FILE = os.getenv("GOOGLE_SERVICE_ACCOUNT_KEY_PATH", "service_account.json")
+CREDENTIALS_FILE = "modules/organizer/credentials1.json"
 TOKEN_FILE = "token.json"
 
 def drive_auth():
@@ -23,8 +23,9 @@ def drive_auth():
             if not SERVICE_ACCOUNT_KEY:
                 raise Exception("GOOGLE_SERVICE_ACCOUNT_KEY environment variable not set")
             service_account_info = json.loads(SERVICE_ACCOUNT_KEY)
-            creds = service_account.Credentials.from_service_account_info(
-                service_account_info, scopes=SCOPES
+            print(service_account_info)
+            creds = service_account.Credentials.from_service_account_file(
+                SERVICE_ACCOUNT_FILE, scopes=SCOPES
             )
         else:
             # Use OAuth 2.0 for development

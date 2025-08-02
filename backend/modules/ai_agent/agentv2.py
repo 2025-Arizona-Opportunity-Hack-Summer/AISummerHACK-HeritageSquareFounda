@@ -92,8 +92,6 @@ class RAGAgent:
             raise ValueError("QA chain not initialized. Run process_documents first.")
         
         response = self.qa_chain.invoke({"query": question})
-        # print(result)
-        # assert(False)
         return {
             "answer": response['result'],
             "source_documents": [
