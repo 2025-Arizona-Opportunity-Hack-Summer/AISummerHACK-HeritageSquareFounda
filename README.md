@@ -194,7 +194,8 @@ link
 
 - Despite technical hurdles, power outages, and time constraints, the team remained committed, collaborative, and encouraging. We embraced the value of:
 > “Take your time, but remember the timeline.”
-We didn’t just build an app — we built a tool that empowers the people who serve their community.
+
+- We didn’t just build an app — we built a tool that empowers the people who serve their community.
 
 ---
 
