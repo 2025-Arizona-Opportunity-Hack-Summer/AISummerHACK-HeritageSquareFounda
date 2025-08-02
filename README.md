@@ -3,7 +3,7 @@
 **Nonprofit**: [Heritage Square Foundation](https://thesquarephx.org/)  
 **Team**: AISummerHACK  
 
-## 👥 Team Members
+## Team Members
 - [Sangeetha Sasikumar](https://github.com/Sangeetha-007)
 - [Isaac Phiri](https://github.com/IsaacPhiri)
 - [Amit Raj Reddy Dharam](https://github.com/Ames-Zero)
@@ -12,23 +12,23 @@
 
 ---
 
-## 🧠 Project Overview
+## Project Overview
 
-### 📌 Problem
+### Problem
 Heritage Square’s Google Drive was heavily cluttered and unstructured, making it difficult for team members to locate key files related to events, marketing, operations, and donor records. Staff were also relying on manual queries using Gemini AI, which introduced inefficiencies and inconsistent results.
 
-### ✅ Solution
+### Solution
 We developed an AI-powered Google Drive assistant to:
 
-- ✅ Automatically categorize and organize files into meaningful folders  
-- ✅ Use Google’s Gemini API to understand content and respond to natural language prompts  
-- ✅ Provide a user-friendly React chat interface for interacting with the assistant  
-- ✅ Enable scalable document search using embeddings and vector databases  
-- ✅ Offer cleanup utilities like removing empty folders and merging duplicates  
+- Automatically categorize and organize files into meaningful folders  
+- Use Google’s Gemini API to understand content and respond to natural language prompts  
+- Provide a user-friendly React chat interface for interacting with the assistant  
+- Enable scalable document search using embeddings and vector databases  
+- Offer cleanup utilities like removing empty folders and merging duplicates  
 
 ---
 
-## 🎯 Project Goal
+## Project Goal
 
 Empower Heritage Square’s team with a smart, integrated assistant that:
 
@@ -39,7 +39,7 @@ Empower Heritage Square’s team with a smart, integrated assistant that:
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 | Layer               | Technologies Used                                                                 |
 |---------------------|-----------------------------------------------------------------------------------|
@@ -53,7 +53,7 @@ Empower Heritage Square’s team with a smart, integrated assistant that:
 
 ---
 
-## 🏗 High-Level Architecture
+## High-Level Architecture
 
 ```bash
 flowchart TD
@@ -66,10 +66,9 @@ flowchart TD
   F --> H[Organizer Module (Folder Mgmt, Categorization)]
 ```
 
-
 ---
 
-📁 File Structure
+## File Structure
 
 ```bash
 backend/
@@ -107,138 +106,103 @@ backend/
 
 ---
 
-💻 Running the Project Locally
-
-✅ Prerequisites
-
-Python 3.10+
-
-Node.js (v18+)
-
-credentials.json for OAuth Drive access (manual only)
-
-Enable Drive API and Gemini API on GCP
+## Running the Project Locally
+### Prerequisites
+- Python 3.10+
+- Node.js (v18+)
+- credentials.json for OAuth Drive access (manual only)
+- Enable Drive API and Gemini API on GCP
 
 
-🧪 Backend
-
+### Backend
+```bash
 git clone https://github.com/2025-Arizona-Opportunity-Hack-Summer/AISummerHACK-HeritageSquareFounda
 cd backend
 pip install -r requirements.txt
 uvicorn main:app --reload
-
-💻 Frontend
-
+```
+### Frontend
+```bash
 cd frontend/frontend-app
 npm install
 npm run dev
+```
+
+---
+## Deployment Notes
+
+- The organizer module (folder cleanup, categorization) works perfectly in development using a credentials.json file for OAuth authentication.
+- In production, Google service accounts are preferred, however, they don’t have full access rights to user Drive contents unless each folder is manually shared.
+- For now, only the prompt feature works in production using service accounts.
+- Categorization and cleanup require OAuth flow for full access.
+- This limitation blocks full deployment but still allows demoing the AI agent’s core prompt capabilities.
+
+---
+
+## Known Challenges & Fixes
+
+### Major Wins:
+- Cleaned and standardized API JSON responses
+- Successfully authenticated Drive API for downloads and file movements
+- Integrated Gemini Pro (text + image) for intelligent classification
+
+
+### Challenges:
+- Service accounts lack write permissions to shared drives unless folders are manually shared
+
+- Some error messages were returned as AI responses, this has been flagged
+
+- Categorization accuracy needs improvement (especially on mixed content files)
 
 
 ---
 
-🚀 Deployment Notes
+## Demo Video
 
-The organizer module (folder cleanup, categorization) works perfectly in development using a credentials.json file for OAuth authentication.
+link
 
-In production, Google service accounts are preferred, however, they don’t have full access rights to user Drive contents unless each folder is manually shared.
+---
 
-For now, only the prompt feature works in production using service accounts.
+## Documentation
 
-Categorization and cleanup require OAuth flow for full access.
+- Main README.md (you’re here)
 
-This limitation blocks full deployment but still allows demoing the AI agent’s core prompt capabilities.
+- Module-specific READMEs in /modules
 
+- .env.template provided for backend setup
+
+---
+
+## DevPost Submission
+
+- DevPost Project Link: https://devpost.com/software/heritage-square-foundation
+
+---
+
+## Team Challenges
+
+- Coordinating across 4 time zones
+- Limited real-time availability for meetings
+- Adapting to LangChain, Google Drive APIs, and Gemini integration
+- Managing merge conflicts and last-minute deployment issues
+- Power outages and connectivity problems during final stages
 
 
 ---
 
-⚠ Known Challenges & Fixes
+## Inspiration & Team Culture
 
-✅ Major Wins:
-
-Cleaned and standardized API JSON responses
-
-Successfully authenticated Drive API for downloads and file movements
-
-Integrated Gemini Pro (text + image) for intelligent classification
-
-
-🚧 Challenges:
-
-Service accounts lack write permissions to shared drives unless folders are manually shared
-
-Some error messages were returned as AI responses — this has been flagged
-
-Categorization accuracy needs improvement (especially on mixed content files)
-
-
-
----
-
-🎥 Demo Video
-
-Coming soon
-
-
----
-
-📑 Documentation
-
-✅ Main README.md (you’re here)
-
-✅ Module-specific READMEs in /modules
-
-✅ .env.template provided for backend setup
-
-✅ API endpoints and file structure documented
-
-
-
----
-
-📌 DevPost Submission
-
-🔗 DevPost Project Link: https://devpost.com/software/heritage-square-foundation
-
----
-
-🧠 Team Challenges
-
-Coordinating across 4 time zones
-
-Limited real-time availability for meetings
-
-Adapting to LangChain, Google Drive APIs, and Gemini integration
-
-Managing merge conflicts and last-minute deployment issues
-
-Power outages and connectivity problems during final stages
-
-
-
----
-
-🌟 Inspiration & Team Culture
-
-Despite technical hurdles, power outages, and time constraints, the team remained committed, collaborative, and encouraging.
-We embraced the value of:
-
+- Despite technical hurdles, power outages, and time constraints, the team remained committed, collaborative, and encouraging. We embraced the value of:
 > “Take your time, but remember the timeline.”
-
-
-
 We didn’t just build an app — we built a tool that empowers the people who serve their community.
 
-
 ---
 
-🤝 Contact
+## Contact
 
-📫 - [Team Slack Channel](https://opportunity-hack.slack.com/app_redirect?channel=aisummerhack)
-
-🛠 GitHub: AISummerHACK-HeritageSquareFounda
-
-📌 Nonprofit: Heritage Square Foundation
+- [Team Slack Channel](https://opportunity-hack.slack.com/app_redirect?channel=aisummerhack)
+- GitHub: https://github.com/2025-Arizona-Opportunity-Hack-Summer/AISummerHACK-HeritageSquareFounda
+- Nonprofit: Heritage Square Foundation
 
 ## Quick Links
 - Nonprofit: [Heritage Square Foundation](https://ohack.dev/nonprofit/QFPGmii2GmDPYrv5tjHA)
