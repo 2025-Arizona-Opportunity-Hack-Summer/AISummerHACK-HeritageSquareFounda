@@ -55,7 +55,7 @@ Empower Heritage Square’s team with a smart, integrated assistant that:
 
 ## High-Level Architecture
 
-```bash
+```mermaid
 flowchart TD
   A[Google Drive API] --> B[Document Extractor]
   B --> C[Text Chunker + Indexing]
