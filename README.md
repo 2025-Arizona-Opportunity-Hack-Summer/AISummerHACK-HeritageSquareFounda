@@ -46,7 +46,7 @@ Empower Heritage Square’s team with a smart, integrated assistant that:
 | **Frontend**        | React.js + Vite                                                                  |
 | **Backend**         | FastAPI (Python), Uvicorn                                                        |
 | **AI Integration**  | Gemini Pro via `google.generativeai` + Gemini Vision                             |
-| **Embedding & RAG** | LangChain, FAISS, PDF/DOCX text extraction                                       |
+| **Embedding & RAG** | LangChain(Huggingface embeddings), ChromaDB, PDF/DOCX text extraction                                       |
 | **File Categorization** | Custom LLM prompts, dynamic folder matching                                |
 | **APIs**            | Google Drive API                                                                 |
 | **Deployment**      | *(Pending full functionality due to service account limitations)*               |
@@ -59,11 +59,11 @@ Empower Heritage Square’s team with a smart, integrated assistant that:
 flowchart TD
   A[Google Drive API] --> B[Document Extractor]
   B --> C[Text Chunker + Indexing]
-  C --> D[Embedding Store (FAISS)]
+  C --> D[Embedding Store- Sentence Transformers + ChromaDB]
   D --> E[Gemini Pro Prompt Handler]
   E --> F[AI Agent + RAG Retrieval]
   F --> G[React UI Chat Interface]
-  F --> H[Organizer Module (Folder Mgmt, Categorization)]
+  F --> H[Organizer Module-Folder Mgmt, Categorization]
 ```
 
 ---
@@ -159,7 +159,7 @@ npm run dev
 
 ## Demo Video
 
-link
+link : https://youtu.be/-Hqu7ILFeAU
 
 ---
 
