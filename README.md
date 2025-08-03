@@ -113,6 +113,27 @@ backend/
 - credentials.json for OAuth Drive access (manual only)
 - Enable Drive API and Gemini API on GCP
 
+### 🔐 Authentication with Google Drive (OAuth 2.0)
+
+To enable access to Google Drive for organizing and categorizing files, the organizer module uses **OAuth 2.0** authentication. During setup, a `token.json` file is generated to store the access and refresh tokens for future authenticated requests.
+
+#### How `token.json` is generated:
+
+1. Ensure you have a valid `credentials.json` file downloaded from your [Google Cloud Console](https://console.cloud.google.com/apis/credentials) with **OAuth client credentials**.
+2. When the API (`uvicorn main:app --reload`) is run for the first time:
+
+   * A browser window will open prompting you to sign in and authorize the app to access your Google Drive.
+   * Upon successful authorization, a file named `token.json` will be automatically created in the project directory.
+3. This `token.json` contains:
+
+   * The access token (short-lived)
+   * The refresh token (used to obtain new access tokens automatically)
+
+#### Notes:
+
+* You **must** share the Google Drive with the email listed in your `credentials.json` to allow access.
+* The `token.json` file is reused in subsequent runs, so you won’t need to authorize again unless it expires or is deleted.
+* For production, consider securing or regenerating `token.json` per user, or switching to a **service account** with shared Drive access (though with limited functionality).
 
 ### Backend
 ```bash
